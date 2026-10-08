@@ -3,15 +3,11 @@
 import { useEffect, useState } from "react";
 import { useStore } from "@/lib/store";
 import LandingPage from "@/components/LandingPage";
-import RoadmapCanvas from "@/components/RoadmapCanvas";
-import RoadmapHeader from "@/components/RoadmapHeader";
-import NodeDetailPanel from "@/components/NodeDetailPanel";
-import AdjustRoadmapModal from "@/components/AdjustRoadmapModal";
+import DashboardShell from "@/components/dashboard/DashboardShell";
 
 export default function Home() {
-  const { roadmap, selectedNodeId, setSelectedNodeId } = useStore();
+  const { roadmap } = useStore();
   const [hasHydrated, setHasHydrated] = useState(false);
-  const [isAdjustOpen, setIsAdjustOpen] = useState(false);
 
   // Avoid hydration mismatch with localStorage persistence
   useEffect(() => {
@@ -33,33 +29,5 @@ export default function Home() {
     return <LandingPage />;
   }
 
-  return (
-    <div className="flex flex-col h-screen w-screen overflow-hidden bg-slate-950 select-none">
-      {/* Top Header */}
-      <RoadmapHeader onOpenAdjust={() => setIsAdjustOpen(true)} />
-
-      {/* Main Flow Canvas Viewport */}
-      <main className="flex-1 w-full h-full relative overflow-hidden">
-        <RoadmapCanvas
-          roadmap={roadmap}
-          selectedNodeId={selectedNodeId}
-          onNodeClick={(id) => setSelectedNodeId(id)}
-        />
-
-        {/* Node Detail Drawer / Panel */}
-        {selectedNodeId && (
-          <NodeDetailPanel
-            nodeId={selectedNodeId}
-            onClose={() => setSelectedNodeId(null)}
-          />
-        )}
-
-        {/* "I Already Know..." Adjustment Modal */}
-        <AdjustRoadmapModal
-          isOpen={isAdjustOpen}
-          onClose={() => setIsAdjustOpen(false)}
-        />
-      </main>
-    </div>
-  );
+  return <DashboardShell />;
 }

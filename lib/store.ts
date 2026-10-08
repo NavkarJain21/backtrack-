@@ -41,6 +41,7 @@ function computeNodeStatuses(roadmap: Roadmap): Roadmap {
 const initialState = {
   roadmap: null as Roadmap | null,
   selectedNodeId: null as string | null,
+  activeTab: "dashboard" as import("./schemas").DashboardTab,
   isGenerating: false,
   isRefining: false,
   isLoadingNodeDetail: false,
@@ -58,6 +59,7 @@ export const useStore = create<AppState>()(
         set({ roadmap: roadmap ? computeNodeStatuses(roadmap) : null }),
 
       setSelectedNodeId: (id) => set({ selectedNodeId: id }),
+      setActiveTab: (tab) => set({ activeTab: tab }),
       setIsGenerating: (v) => set({ isGenerating: v }),
       setIsRefining: (v) => set({ isRefining: v }),
       setIsLoadingNodeDetail: (v) => set({ isLoadingNodeDetail: v }),
@@ -180,6 +182,7 @@ export const useStore = create<AppState>()(
       ),
       partialize: (state) => ({
         roadmap: state.roadmap,
+        activeTab: state.activeTab,
         nodeDetailCache: state.nodeDetailCache,
         actionItemProgress: state.actionItemProgress,
         lastGoal: state.lastGoal,

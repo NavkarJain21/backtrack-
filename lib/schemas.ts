@@ -134,11 +134,21 @@ export const AdjustRoadmapResponseSchema = z.object({
 });
 export type AdjustRoadmapResponse = z.infer<typeof AdjustRoadmapResponseSchema>;
 
-// ── Zustand store types ───────────────────────────────────────────────────────
+export const DashboardTabSchema = z.enum([
+  "dashboard",
+  "roadmap",
+  "skills",
+  "projects",
+  "progress",
+  "profile",
+  "settings",
+]);
+export type DashboardTab = z.infer<typeof DashboardTabSchema>;
 
 export interface AppState {
   roadmap: Roadmap | null;
   selectedNodeId: string | null;
+  activeTab: DashboardTab;
   isGenerating: boolean;
   isRefining: boolean;
   isLoadingNodeDetail: boolean;
@@ -149,6 +159,7 @@ export interface AppState {
   // Actions
   setRoadmap: (roadmap: Roadmap | null) => void;
   setSelectedNodeId: (id: string | null) => void;
+  setActiveTab: (tab: DashboardTab) => void;
   setIsGenerating: (v: boolean) => void;
   setIsRefining: (v: boolean) => void;
   setIsLoadingNodeDetail: (v: boolean) => void;
