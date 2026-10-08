@@ -10,35 +10,37 @@
 }
 
 .react-flow__controls {
-  border: 1px solid #334155 !important;
-  background: #0f172a !important;
+  border: 1px solid #e2e8f0 !important;
+  background: #ffffff !important;
   border-radius: 8px !important;
   overflow: hidden;
+  box-shadow: 0 1px 3px 0 rgb(15 23 42 / 0.08);
 }
 
 .react-flow__controls-button {
-  background: #0f172a !important;
-  border-color: #334155 !important;
-  color: #94a3b8 !important;
-  fill: #94a3b8 !important;
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #64748b !important;
+  fill: #64748b !important;
   width: 36px !important;
   height: 36px !important;
 }
 
 .react-flow__controls-button:hover {
-  background: #1e293b !important;
-  color: #f1f5f9 !important;
-  fill: #f1f5f9 !important;
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+  fill: #0f172a !important;
 }
 
 .react-flow__minimap {
-  background: #0f172a !important;
-  border: 1px solid #334155 !important;
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
   border-radius: 8px !important;
+  box-shadow: 0 1px 3px 0 rgb(15 23 42 / 0.08);
 }
 
 .react-flow__minimap-mask {
-  fill: rgba(0, 0, 0, 0.4) !important;
+  fill: rgba(148, 163, 184, 0.25) !important;
 }
 
 .react-flow__attribution {
@@ -46,7 +48,7 @@
 }
 
 .react-flow__background pattern circle {
-  fill: #1e293b;
+  fill: #cbd5e1;
 }
 
 /* Scrollbar */
@@ -55,14 +57,14 @@
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: #f1f5f9;
 }
 ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: #cbd5e1;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: #94a3b8;
 }
 
 /* Animations */
@@ -77,8 +79,8 @@
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
-  50% { box-shadow: 0 0 0 8px rgba(59, 130, 246, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.25); }
+  50% { box-shadow: 0 0 0 8px rgba(37, 99, 235, 0); }
 }
 
 .animate-fade-in {
@@ -100,21 +102,21 @@
 }
 
 .shimmer {
-  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background: linear-gradient(90deg, #e2e8f0 25%, #cbd5e1 50%, #e2e8f0 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
 
 /* Glass effect */
 .glass {
-  background: rgba(15, 23, 42, 0.8);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
 
 /* Roadmap workspace: focus + motion */
 .roadmap-node:focus-visible {
-  outline: 2px solid #67e8f9;
+  outline: 2px solid #2563eb;
   outline-offset: 2px;
 }
 

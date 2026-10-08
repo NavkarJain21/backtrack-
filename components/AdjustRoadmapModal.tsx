@@ -74,17 +74,17 @@ export default function AdjustRoadmapModal({ isOpen, onClose }: AdjustRoadmapMod
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
-      <div className="w-full max-w-lg bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-fade-in">
+      <div className="w-full max-w-lg bg-white border border-slate-200 rounded-2xl shadow-2xl overflow-hidden flex flex-col">
         {/* Header */}
-        <div className="p-5 border-b border-slate-800 flex items-center justify-between">
+        <div className="p-5 border-b border-slate-200 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-purple-900/50 border border-purple-700 text-purple-400">
+            <div className="p-2 rounded-xl bg-violet-50 border border-violet-200 text-violet-600">
               <Sparkles size={18} />
             </div>
             <div>
-              <h3 className="text-base font-bold text-white">I Already Know...</h3>
-              <p className="text-xs text-slate-400">
+              <h3 className="text-base font-bold text-slate-900">I Already Know...</h3>
+              <p className="text-xs text-slate-500">
                 Accelerate your roadmap by marking existing skills
               </p>
             </div>
@@ -92,7 +92,7 @@ export default function AdjustRoadmapModal({ isOpen, onClose }: AdjustRoadmapMod
           <button
             onClick={onClose}
             disabled={isRefining}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors disabled:opacity-50"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors disabled:opacity-50"
           >
             <X size={18} />
           </button>
@@ -101,7 +101,7 @@ export default function AdjustRoadmapModal({ isOpen, onClose }: AdjustRoadmapMod
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-5 space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+            <label className="block text-xs font-semibold text-slate-600 mb-1.5">
               Tell us what background or skills you already have:
             </label>
             <textarea
@@ -110,15 +110,15 @@ export default function AdjustRoadmapModal({ isOpen, onClose }: AdjustRoadmapMod
               onChange={(e) => setStatement(e.target.value)}
               disabled={isRefining}
               placeholder="e.g., I have 3 years of experience with Python and SQL, and I'm very comfortable with Git and Linux basics."
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-slate-100 placeholder-slate-500 text-xs focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 text-xs focus:outline-none focus:ring-2 focus:ring-violet-500/30 focus:border-violet-500 focus:bg-white transition-all resize-none"
             />
           </div>
 
           {/* Quick chips from roadmap */}
           {earlyNodes.length > 0 && (
             <div className="space-y-1.5">
-              <div className="flex items-center gap-1.5 text-[11px] text-slate-400">
-                <Lightbulb size={12} className="text-amber-400" />
+              <div className="flex items-center gap-1.5 text-[11px] text-slate-500">
+                <Lightbulb size={12} className="text-amber-500" />
                 <span>Quick-select skills from your roadmap:</span>
               </div>
               <div className="flex flex-wrap gap-1.5">
@@ -128,7 +128,7 @@ export default function AdjustRoadmapModal({ isOpen, onClose }: AdjustRoadmapMod
                     type="button"
                     onClick={() => handleAddChip(n.title)}
                     disabled={isRefining}
-                    className="px-2.5 py-1 rounded-full text-xs bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 transition-colors"
+                    className="px-2.5 py-1 rounded-full text-xs bg-white hover:bg-slate-100 border border-slate-200 text-slate-600 transition-colors shadow-sm"
                   >
                     + {n.title}
                   </button>
@@ -138,7 +138,7 @@ export default function AdjustRoadmapModal({ isOpen, onClose }: AdjustRoadmapMod
           )}
 
           {error && (
-            <p className="text-xs text-red-400 bg-red-950/40 p-2.5 rounded-lg border border-red-800/50">
+            <p className="text-xs text-red-600 bg-red-50 p-2.5 rounded-lg border border-red-200">
               {error}
             </p>
           )}
@@ -149,14 +149,14 @@ export default function AdjustRoadmapModal({ isOpen, onClose }: AdjustRoadmapMod
               type="button"
               onClick={onClose}
               disabled={isRefining}
-              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-300 transition-colors"
+              className="px-4 py-2 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-xs font-medium text-slate-600 transition-colors shadow-sm"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isRefining || !statement.trim()}
-              className="px-5 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-xs font-semibold text-white shadow-lg shadow-purple-900/30 transition-all flex items-center gap-2 disabled:opacity-50"
+              className="px-5 py-2 rounded-xl bg-violet-600 hover:bg-violet-700 text-xs font-semibold text-white shadow-md shadow-violet-600/25 transition-all flex items-center gap-2 disabled:opacity-50"
             >
               {isRefining ? (
                 <>

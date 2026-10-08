@@ -36,14 +36,14 @@ export default function SkillsView({ onOpenNode }: SkillsViewProps) {
   return (
     <div className="space-y-6 pb-12 animate-fade-in max-w-7xl mx-auto">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-6 rounded-2xl bg-slate-900 border border-slate-800">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
         <div>
-          <h1 className="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
-            <Layers className="text-blue-400" size={24} />
+          <h1 className="text-xl md:text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <Layers className="text-blue-600" size={24} />
             Skills Inventory
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
-            Complete competency catalog derived for: <span className="text-slate-200 font-semibold">{roadmap.goal}</span>
+          <p className="text-xs text-slate-500 mt-1">
+            Complete competency catalog derived for: <span className="text-slate-700 font-semibold">{roadmap.goal}</span>
           </p>
         </div>
 
@@ -56,7 +56,7 @@ export default function SkillsView({ onOpenNode }: SkillsViewProps) {
               placeholder="Search skills or tags..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+              className="w-full pl-9 pr-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:bg-white"
             />
           </div>
 
@@ -69,7 +69,7 @@ export default function SkillsView({ onOpenNode }: SkillsViewProps) {
                   "px-2.5 py-1 rounded-lg text-xs font-medium capitalize transition-colors whitespace-nowrap",
                   filterStatus === st
                     ? "bg-blue-600 text-white"
-                    : "bg-slate-800 text-slate-400 hover:text-slate-200"
+                    : "bg-slate-100 text-slate-500 hover:text-slate-700"
                 )}
               >
                 {st === "all" ? "All" : st.replace("_", " ")}
@@ -85,14 +85,14 @@ export default function SkillsView({ onOpenNode }: SkillsViewProps) {
           <div
             key={node.id}
             className={cn(
-              "p-4 rounded-xl border transition-all flex flex-col justify-between group",
+              "p-4 rounded-xl border transition-all flex flex-col justify-between group bg-white",
               getStatusBg(node.status),
-              "hover:border-slate-500/80 shadow-md"
+              "hover:shadow-md shadow-sm"
             )}
           >
             <div>
               <div className="flex items-center justify-between gap-2 mb-2">
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-900/80 text-slate-300 border border-slate-700">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-white/80 text-slate-600 border border-slate-200">
                   Phase {node.phase}
                 </span>
                 <span
@@ -105,10 +105,10 @@ export default function SkillsView({ onOpenNode }: SkillsViewProps) {
                 </span>
               </div>
 
-              <h3 className="text-sm font-bold text-white mb-1 group-hover:text-blue-300 transition-colors">
+              <h3 className="text-sm font-bold text-slate-900 mb-1 group-hover:text-blue-700 transition-colors">
                 {node.title}
               </h3>
-              <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed mb-3">
+              <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed mb-3">
                 {node.description}
               </p>
 
@@ -117,7 +117,7 @@ export default function SkillsView({ onOpenNode }: SkillsViewProps) {
                 {node.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="text-[10px] px-1.5 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800"
+                    className="text-[10px] px-1.5 py-0.5 rounded bg-white/80 text-slate-500 border border-slate-200"
                   >
                     #{tag}
                   </span>
@@ -125,8 +125,8 @@ export default function SkillsView({ onOpenNode }: SkillsViewProps) {
               </div>
             </div>
 
-            <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs">
-              <span className="text-slate-400 flex items-center gap-1">
+            <div className="pt-3 border-t border-slate-200/80 flex items-center justify-between text-xs">
+              <span className="text-slate-500 flex items-center gap-1">
                 <Clock size={12} />
                 {formatHours(node.estimatedHours)}
               </span>
@@ -138,14 +138,14 @@ export default function SkillsView({ onOpenNode }: SkillsViewProps) {
                       e.stopPropagation();
                       updateNodeStatus(node.id, "known");
                     }}
-                    className="text-[11px] text-purple-400 hover:text-purple-300 font-medium"
+                    className="text-[11px] text-violet-600 hover:text-violet-700 font-medium"
                   >
                     Mark Known
                   </button>
                 )}
                 <button
                   onClick={() => onOpenNode(node.id)}
-                  className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition-colors flex items-center gap-1"
+                  className="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-semibold transition-colors flex items-center gap-1 shadow-sm"
                 >
                   Inspect
                   <ChevronRight size={12} />
@@ -157,7 +157,7 @@ export default function SkillsView({ onOpenNode }: SkillsViewProps) {
       </div>
 
       {filteredNodes.length === 0 && (
-        <div className="p-12 text-center text-slate-500 rounded-2xl bg-slate-900 border border-slate-800">
+        <div className="p-12 text-center text-slate-500 rounded-2xl bg-white border border-slate-200 shadow-sm">
           No skills match your current search or filter criteria.
         </div>
       )}

@@ -18,22 +18,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className={`${inter.className} bg-gray-950 text-gray-100 min-h-screen`}>
+    <html lang="en">
+      <body className={`${inter.className} bg-slate-50 text-slate-900 min-h-screen`}>
         {children}
         <Toaster
           position="bottom-right"
           toastOptions={{
             style: {
-              background: "#1e293b",
-              color: "#f1f5f9",
-              border: "1px solid #334155",
+              background: "#ffffff",
+              color: "#0f172a",
+              border: "1px solid #e2e8f0",
+              boxShadow: "0 4px 12px rgba(15, 23, 42, 0.08)",
             },
             success: {
-              iconTheme: { primary: "#10b981", secondary: "#f1f5f9" },
+              iconTheme: { primary: "#059669", secondary: "#ffffff" },
             },
             error: {
-              iconTheme: { primary: "#ef4444", secondary: "#f1f5f9" },
+              iconTheme: { primary: "#dc2626", secondary: "#ffffff" },
             },
           }}
         />

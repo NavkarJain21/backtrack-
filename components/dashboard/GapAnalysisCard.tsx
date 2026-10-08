@@ -30,44 +30,44 @@ export default function GapAnalysisCard({ onSelectNode }: GapAnalysisCardProps) 
   const totalNodes = (roadmap?.nodes || []).length;
 
   return (
-    <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-xl flex flex-col justify-between">
+    <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
       {/* Header */}
       <div>
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-purple-950 border border-purple-800/60 text-purple-400">
+            <div className="p-2 rounded-xl bg-violet-50 border border-violet-200 text-violet-600">
               <Target size={18} />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-white flex items-center gap-1.5">
+              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
                 Target Gap Analysis
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-950 text-purple-300 border border-purple-800 font-semibold">
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-violet-50 text-violet-700 border border-violet-200 font-semibold">
                   Competency Map
                 </span>
               </h3>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500">
                 Verified candidate capabilities vs target role requirements
               </p>
             </div>
           </div>
 
           <div className="text-right">
-            <span className="text-2xl font-black text-white">{readinessPercentage}%</span>
-            <div className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">
+            <span className="text-2xl font-black text-slate-900">{readinessPercentage}%</span>
+            <div className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">
               Role Match
             </div>
           </div>
         </div>
 
         {/* Readiness Meter */}
-        <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800 mb-4">
+        <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 mb-4">
           <div className="flex items-center justify-between text-xs mb-1.5">
-            <span className="text-slate-300 font-medium">Readiness Trajectory</span>
-            <span className="text-slate-400 font-mono">
+            <span className="text-slate-600 font-medium">Readiness Trajectory</span>
+            <span className="text-slate-500 font-mono">
               {strengths.length} / {(roadmap?.nodes || []).length} Verified
             </span>
           </div>
-          <div className="h-2 w-full bg-slate-900 rounded-full overflow-hidden flex">
+          <div className="h-2 w-full bg-slate-200 rounded-full overflow-hidden flex">
             <div
               className="h-full bg-emerald-500 transition-all duration-500"
               style={{ width: `${(strengths.length / ((roadmap?.nodes.length || 1))) * 100}%` }}
@@ -79,12 +79,12 @@ export default function GapAnalysisCard({ onSelectNode }: GapAnalysisCardProps) 
               title="Moderate Gaps"
             />
             <div
-              className="h-full bg-slate-700 transition-all duration-500"
+              className="h-full bg-slate-400 transition-all duration-500"
               style={{ width: `${(criticalGaps.length / ((roadmap?.nodes.length || 1))) * 100}%` }}
               title="Critical Gaps"
             />
           </div>
-          <div className="flex items-center gap-3 text-[10px] text-slate-400 mt-2">
+          <div className="flex items-center gap-3 text-[10px] text-slate-500 mt-2">
             <span className="flex items-center gap-1">
               <span className="w-2 h-2 rounded-full bg-emerald-500" />
               {strengths.length} Strengths
@@ -94,21 +94,21 @@ export default function GapAnalysisCard({ onSelectNode }: GapAnalysisCardProps) 
               {moderateGaps.length} Moderate
             </span>
             <span className="flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-slate-600" />
+              <span className="w-2 h-2 rounded-full bg-slate-400" />
               {criticalGaps.length} Critical
             </span>
           </div>
         </div>
 
         {/* Filter Pills */}
-        <div className="flex gap-1.5 mb-3.5 border-b border-slate-800/80 pb-2.5">
+        <div className="flex gap-1.5 mb-3.5 border-b border-slate-200 pb-2.5">
           <button
             onClick={() => setActiveCategory("all")}
             className={cn(
               "px-2.5 py-1 rounded-lg text-xs font-medium transition-colors",
               activeCategory === "all"
-                ? "bg-slate-800 text-white"
-                : "text-slate-400 hover:text-slate-200"
+                ? "bg-slate-100 text-slate-900"
+                : "text-slate-500 hover:text-slate-700"
             )}
           >
             All Skills
@@ -118,8 +118,8 @@ export default function GapAnalysisCard({ onSelectNode }: GapAnalysisCardProps) 
             className={cn(
               "px-2.5 py-1 rounded-lg text-xs font-medium transition-colors flex items-center gap-1",
               activeCategory === "strengths"
-                ? "bg-emerald-950 text-emerald-300 border border-emerald-800"
-                : "text-slate-400 hover:text-slate-200"
+                ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                : "text-slate-500 hover:text-slate-700"
             )}
           >
             <CheckCircle2 size={12} />
@@ -130,8 +130,8 @@ export default function GapAnalysisCard({ onSelectNode }: GapAnalysisCardProps) 
             className={cn(
               "px-2.5 py-1 rounded-lg text-xs font-medium transition-colors flex items-center gap-1",
               activeCategory === "moderate"
-                ? "bg-amber-950 text-amber-300 border border-amber-800"
-                : "text-slate-400 hover:text-slate-200"
+                ? "bg-amber-50 text-amber-700 border border-amber-200"
+                : "text-slate-500 hover:text-slate-700"
             )}
           >
             <AlertTriangle size={12} />
@@ -142,8 +142,8 @@ export default function GapAnalysisCard({ onSelectNode }: GapAnalysisCardProps) 
             className={cn(
               "px-2.5 py-1 rounded-lg text-xs font-medium transition-colors flex items-center gap-1",
               activeCategory === "critical"
-                ? "bg-slate-800 text-slate-300 border border-slate-700"
-                : "text-slate-400 hover:text-slate-200"
+                ? "bg-slate-100 text-slate-600 border border-slate-300"
+                : "text-slate-500 hover:text-slate-700"
             )}
           >
             <Lock size={12} />
@@ -153,7 +153,7 @@ export default function GapAnalysisCard({ onSelectNode }: GapAnalysisCardProps) 
 
         {/* Skills List */}
         {totalNodes === 0 ? (
-          <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800/80 text-xs text-slate-400 leading-relaxed">
+          <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-500 leading-relaxed">
             No roadmap data yet. Generate a roadmap to populate your gap analysis.
           </div>
         ) : (
@@ -164,20 +164,20 @@ export default function GapAnalysisCard({ onSelectNode }: GapAnalysisCardProps) 
               <div
                 key={node.id}
                 onClick={() => onSelectNode(node.id)}
-                className="p-2.5 rounded-xl bg-emerald-950/25 border border-emerald-800/40 hover:border-emerald-700/60 transition-all cursor-pointer flex items-center justify-between group"
+                className="p-2.5 rounded-xl bg-emerald-50/60 border border-emerald-200 hover:border-emerald-300 transition-all cursor-pointer flex items-center justify-between group"
               >
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <CheckCircle2 size={15} className="text-emerald-400 flex-shrink-0" />
+                  <CheckCircle2 size={15} className="text-emerald-600 flex-shrink-0" />
                   <div className="min-w-0">
-                    <h5 className="text-xs font-semibold text-slate-200 truncate group-hover:text-emerald-300">
+                    <h5 className="text-xs font-semibold text-slate-700 truncate group-hover:text-emerald-700">
                       {node.title}
                     </h5>
-                    <span className="text-[10px] text-emerald-400/90 font-medium">
+                    <span className="text-[10px] text-emerald-600 font-medium">
                       Phase {node.phase} • {node.status === "known" ? "Verified Prior Knowledge" : "Completed"}
                     </span>
                   </div>
                 </div>
-                <ChevronRight size={14} className="text-slate-600 group-hover:text-slate-400 flex-shrink-0" />
+                <ChevronRight size={14} className="text-slate-300 group-hover:text-slate-500 flex-shrink-0" />
               </div>
             ))}
 
@@ -187,20 +187,20 @@ export default function GapAnalysisCard({ onSelectNode }: GapAnalysisCardProps) 
               <div
                 key={node.id}
                 onClick={() => onSelectNode(node.id)}
-                className="p-2.5 rounded-xl bg-amber-950/25 border border-amber-800/40 hover:border-amber-700/60 transition-all cursor-pointer flex items-center justify-between group"
+                className="p-2.5 rounded-xl bg-amber-50/60 border border-amber-200 hover:border-amber-300 transition-all cursor-pointer flex items-center justify-between group"
               >
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <AlertTriangle size={15} className="text-amber-400 flex-shrink-0" />
+                  <AlertTriangle size={15} className="text-amber-600 flex-shrink-0" />
                   <div className="min-w-0">
-                    <h5 className="text-xs font-semibold text-slate-200 truncate group-hover:text-amber-300">
+                    <h5 className="text-xs font-semibold text-slate-700 truncate group-hover:text-amber-700">
                       {node.title}
                     </h5>
-                    <span className="text-[10px] text-amber-400/90 font-medium">
+                    <span className="text-[10px] text-amber-600 font-medium">
                       Phase {node.phase} • {node.status === "in_progress" ? "Active In Progress" : "Available to Learn"}
                     </span>
                   </div>
                 </div>
-                <span className="text-[10px] px-2 py-0.5 rounded bg-amber-900/40 text-amber-300 border border-amber-800/60 font-medium">
+                <span className="text-[10px] px-2 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200 font-medium">
                   Actionable
                 </span>
               </div>
@@ -212,12 +212,12 @@ export default function GapAnalysisCard({ onSelectNode }: GapAnalysisCardProps) 
               <div
                 key={node.id}
                 onClick={() => onSelectNode(node.id)}
-                className="p-2.5 rounded-xl bg-slate-950/50 border border-slate-800/80 hover:border-slate-700 transition-all cursor-pointer flex items-center justify-between opacity-80 group"
+                className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 hover:border-slate-300 transition-all cursor-pointer flex items-center justify-between opacity-80 group"
               >
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <Lock size={15} className="text-slate-500 flex-shrink-0" />
+                  <Lock size={15} className="text-slate-400 flex-shrink-0" />
                   <div className="min-w-0">
-                    <h5 className="text-xs font-semibold text-slate-300 truncate group-hover:text-white">
+                    <h5 className="text-xs font-semibold text-slate-600 truncate group-hover:text-slate-900">
                       {node.title}
                     </h5>
                     <span className="text-[10px] text-slate-500">
@@ -231,7 +231,7 @@ export default function GapAnalysisCard({ onSelectNode }: GapAnalysisCardProps) 
               </div>
             ))}
           {strengths.length === 0 && moderateGaps.length === 0 && criticalGaps.length === 0 && totalNodes > 0 && (
-            <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800/80 text-xs text-slate-400">
+            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-500">
               No skills in this category yet.
             </div>
           )}
@@ -240,7 +240,7 @@ export default function GapAnalysisCard({ onSelectNode }: GapAnalysisCardProps) 
       </div>
 
       {/* Summary Footer */}
-      <div className="mt-4 pt-3 border-t border-slate-800/80 text-[11px] text-slate-400">
+      <div className="mt-4 pt-3 border-t border-slate-200 text-[11px] text-slate-500">
         <p className="leading-relaxed">
           {totalNodes === 0
             ? "Gap analysis will appear once your roadmap is generated."

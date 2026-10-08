@@ -17,39 +17,39 @@ export default function SettingsView() {
   return (
     <div className="space-y-6 pb-12 animate-fade-in max-w-4xl mx-auto">
       {/* Header */}
-      <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800">
-        <h1 className="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
-          <Settings className="text-slate-400" size={24} />
+      <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
+        <h1 className="text-xl md:text-2xl font-bold text-slate-900 flex items-center gap-2">
+          <Settings className="text-slate-500" size={24} />
           Platform Settings & Engine
         </h1>
-        <p className="text-xs text-slate-400 mt-1">
+        <p className="text-xs text-slate-500 mt-1">
           Configure AI model inference, local cache parameters, and session state.
         </p>
       </div>
 
       {/* AI Model Architecture Card */}
-      <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
+      <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-xl bg-blue-950 border border-blue-800/60 text-blue-400">
+          <div className="p-2 rounded-xl bg-blue-50 border border-blue-200 text-blue-600">
             <Cpu size={18} />
           </div>
           <div>
-            <h2 className="text-sm font-bold text-white">AI Inference Configuration</h2>
-            <p className="text-xs text-slate-400">Anthropic Claude Sonnet 4.5 via Server-side Tool Use</p>
+            <h2 className="text-sm font-bold text-slate-900">AI Inference Configuration</h2>
+            <p className="text-xs text-slate-500">Anthropic Claude Sonnet 4.5 via Server-side Tool Use</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-          <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800/80 space-y-1">
-            <span className="text-[11px] text-slate-400">Structured Tool Handler</span>
-            <div className="text-xs font-mono font-semibold text-blue-300">
+          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+            <span className="text-[11px] text-slate-500">Structured Tool Handler</span>
+            <div className="text-xs font-mono font-semibold text-blue-700">
               generate_roadmap / adjust_roadmap
             </div>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800/80 space-y-1">
-            <span className="text-[11px] text-slate-400">Schema Validation</span>
-            <div className="text-xs font-mono font-semibold text-emerald-300">
+          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+            <span className="text-[11px] text-slate-500">Schema Validation</span>
+            <div className="text-xs font-mono font-semibold text-emerald-700">
               Strict Zod v4 Runtime Guard
             </div>
           </div>
@@ -57,42 +57,42 @@ export default function SettingsView() {
       </div>
 
       {/* Local Storage & Security */}
-      <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
+      <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-xl bg-purple-950 border border-purple-800/60 text-purple-400">
+          <div className="p-2 rounded-xl bg-violet-50 border border-violet-200 text-violet-600">
             <HardDrive size={18} />
           </div>
           <div>
-            <h2 className="text-sm font-bold text-white">Zero-Database Client Persistence</h2>
-            <p className="text-xs text-slate-400">Encrypted in browser localStorage via Zustand persist middleware</p>
+            <h2 className="text-sm font-bold text-slate-900">Zero-Database Client Persistence</h2>
+            <p className="text-xs text-slate-500">Encrypted in browser localStorage via Zustand persist middleware</p>
           </div>
         </div>
 
-        <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800/80 text-xs text-slate-300 space-y-1">
+        <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-1">
           <div className="flex justify-between">
-            <span className="text-slate-400">Active Storage Key:</span>
-            <span className="font-mono text-purple-300">backtrack-store</span>
+            <span className="text-slate-500">Active Storage Key:</span>
+            <span className="font-mono text-violet-700">backtrack-store</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-slate-400">Cached Nodes:</span>
-            <span className="font-mono text-slate-200">{(roadmap?.nodes || []).length} nodes</span>
+            <span className="text-slate-500">Cached Nodes:</span>
+            <span className="font-mono text-slate-700">{(roadmap?.nodes || []).length} nodes</span>
           </div>
         </div>
       </div>
 
       {/* Danger Zone */}
-      <div className="p-6 rounded-2xl bg-red-950/20 border border-red-900/40 space-y-3">
-        <div className="flex items-center gap-2 text-xs font-bold text-red-400 uppercase tracking-wider">
+      <div className="p-6 rounded-2xl bg-red-50/60 border border-red-200 space-y-3">
+        <div className="flex items-center gap-2 text-xs font-bold text-red-600 uppercase tracking-wider">
           <AlertTriangle size={15} />
           Danger Zone
         </div>
-        <p className="text-xs text-slate-400">
+        <p className="text-xs text-slate-500">
           Resetting your roadmap permanently removes all local progress and clears your active pipeline.
         </p>
 
         <button
           onClick={handleReset}
-          className="px-4 py-2 rounded-xl bg-red-950/60 hover:bg-red-900/80 border border-red-800/60 text-red-300 text-xs font-semibold transition-colors flex items-center gap-2"
+          className="px-4 py-2 rounded-xl bg-white hover:bg-red-50 border border-red-200 text-red-600 text-xs font-semibold transition-colors flex items-center gap-2 shadow-sm"
         >
           <RefreshCw size={13} />
           Reset Active Roadmap

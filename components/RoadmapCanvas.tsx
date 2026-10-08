@@ -155,23 +155,23 @@ function buildEdges(
       const isCritical = criticalEdgeIds.has(edgeKey);
       const emphasized = showCritical && isCritical;
 
-      let stroke = "#475569";
-      let opacity = 0.45;
+      let stroke = "#94a3b8";
+      let opacity = 0.6;
       if (node.status === "locked") {
-        stroke = "#3f4c5f";
+        stroke = "#94a3b8";
         opacity = 0.5;
       } else if (node.status === "completed") {
-        stroke = "#047857";
-        opacity = 0.7;
+        stroke = "#059669";
+        opacity = 0.8;
       } else if (node.status === "known") {
-        stroke = "#6d28d9";
-        opacity = 0.7;
+        stroke = "#7c3aed";
+        opacity = 0.8;
       } else if (node.status === "in_progress") {
         stroke = "#d97706";
         opacity = 0.9;
       } else if (node.status === "available") {
-        stroke = "#3b82f6";
-        opacity = 0.8;
+        stroke = "#2563eb";
+        opacity = 0.85;
       }
       // Critical path: subtle amber guide — never a wall of orange.
       if (emphasized) {
@@ -211,7 +211,7 @@ function FitViewButton() {
       onClick={() =>
         fitView({ padding: 0.15, duration: prefersReducedMotion() ? 0 : 400 })
       }
-      className="px-3 py-1.5 min-h-[36px] bg-slate-900/95 hover:bg-slate-800 border border-slate-700 rounded-lg text-xs font-medium text-slate-300 transition-colors shadow-lg"
+      className="px-3 py-1.5 min-h-[36px] bg-white hover:bg-slate-100 border border-slate-200 rounded-lg text-xs font-medium text-slate-600 transition-colors shadow-sm"
       aria-label="Fit roadmap to view"
     >
       Fit View
@@ -310,12 +310,12 @@ export default function RoadmapCanvas({
       aria-label="Roadmap graph workspace"
     >
       {/* ── Dedicated toolbar (real layout space, never overlays the graph) ── */}
-      <div className="flex-shrink-0 border-b border-slate-800 bg-slate-950/90 px-3 py-2 space-y-2">
+      <div className="flex-shrink-0 border-b border-slate-200 bg-white px-3 py-2 space-y-2">
         <div className="flex items-center gap-2">
           <div className="relative flex-1 min-w-0">
             <Search
               size={14}
-              className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500"
+              className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400"
               aria-hidden
             />
             <input
@@ -329,12 +329,12 @@ export default function RoadmapCanvas({
               }}
               placeholder="Search nodes, tags, or phase…"
               aria-label="Search roadmap nodes by title, type, or phase"
-              className="w-full h-10 sm:h-9 rounded-lg bg-slate-900 border border-slate-700 pl-8 pr-8 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+              className="w-full h-10 sm:h-9 rounded-lg bg-slate-50 border border-slate-200 pl-8 pr-8 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 focus:bg-white"
             />
             {query && (
               <button
                 onClick={() => setQuery("")}
-                className="absolute right-1 top-1/2 -translate-y-1/2 p-2 min-h-[36px] min-w-[36px] text-slate-500 hover:text-slate-200 flex items-center justify-center"
+                className="absolute right-1 top-1/2 -translate-y-1/2 p-2 min-h-[36px] min-w-[36px] text-slate-400 hover:text-slate-700 flex items-center justify-center"
                 aria-label="Clear search"
               >
                 <X size={14} />
@@ -347,7 +347,7 @@ export default function RoadmapCanvas({
             onClick={() => setFiltersOpen((v) => !v)}
             aria-expanded={filtersOpen}
             aria-controls="roadmap-filter-group"
-            className="sm:hidden flex items-center gap-1.5 h-10 px-3 rounded-lg border border-slate-700 bg-slate-900 text-[11px] font-semibold text-slate-300 shrink-0"
+            className="sm:hidden flex items-center gap-1.5 h-10 px-3 rounded-lg border border-slate-200 bg-white text-[11px] font-semibold text-slate-600 shrink-0 shadow-sm"
           >
             <ListFilter size={13} aria-hidden />
             {filter === "all" ? "Filters" : activeFilterLabel}
@@ -377,8 +377,8 @@ export default function RoadmapCanvas({
                 className={cn(
                   "flex items-center gap-1 px-2.5 h-9 min-w-[44px] rounded-lg text-[11px] font-semibold whitespace-nowrap border transition-colors",
                   pressed
-                    ? "bg-cyan-950/80 border-cyan-700 text-cyan-200"
-                    : "bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-600"
+                    ? "bg-blue-50 border-blue-300 text-blue-700"
+                    : "bg-white border-slate-200 text-slate-500 hover:text-slate-700 hover:border-slate-300"
                 )}
               >
                 <Icon size={12} aria-hidden />
@@ -392,17 +392,17 @@ export default function RoadmapCanvas({
           <div
             role="status"
             aria-live="polite"
-            className="flex items-center justify-between gap-2 text-[11px] text-slate-400"
+            className="flex items-center justify-between gap-2 text-[11px] text-slate-500"
           >
             <span>
               {query.trim() && (
                 <>
-                  Search: <span className="text-slate-200 font-semibold">“{query.trim()}”</span>{" "}
+                  Search: <span className="text-slate-700 font-semibold">“{query.trim()}”</span>{" "}
                 </>
               )}
               {filter !== "all" && (
                 <>
-                  Filter: <span className="text-slate-200 font-semibold">{activeFilterLabel}</span>{" "}
+                  Filter: <span className="text-slate-700 font-semibold">{activeFilterLabel}</span>{" "}
                 </>
               )}
               · {visibleCount} result{visibleCount === 1 ? "" : "s"}
@@ -412,7 +412,7 @@ export default function RoadmapCanvas({
                 setQuery("");
                 setFilter("all");
               }}
-              className="text-cyan-300 hover:text-cyan-200 font-semibold px-1"
+              className="text-blue-600 hover:text-blue-700 font-semibold px-1"
             >
               Clear
             </button>
@@ -441,7 +441,7 @@ export default function RoadmapCanvas({
         proOptions={{ hideAttribution: true }}
         aria-label={`Career roadmap graph: ${roadmap.nodes.length} nodes`}
       >
-        <Background variant={BackgroundVariant.Dots} gap={24} size={1} color="#1e293b" />
+        <Background variant={BackgroundVariant.Dots} gap={24} size={1.5} color="#cbd5e1" />
         <Controls showInteractive={false} position="bottom-left" />
         <MiniMap
           className="!hidden lg:!block"
@@ -455,17 +455,17 @@ export default function RoadmapCanvas({
               case "in_progress":
                 return "#d97706";
               case "available":
-                return "#3b82f6";
+                return "#2563eb";
               default:
-                return "#475569";
+                return "#94a3b8";
             }
           }}
-          maskColor="rgba(0,0,0,0.6)"
+          maskColor="rgba(148, 163, 184, 0.25)"
           style={{
-            background: "#0f172a",
-            border: "1px solid #1e293b",
+            background: "#ffffff",
+            border: "1px solid #e2e8f0",
             borderRadius: 8,
-            opacity: 0.85,
+            opacity: 0.95,
           }}
           aria-label="Roadmap minimap"
         />
@@ -478,7 +478,7 @@ export default function RoadmapCanvas({
               onClick={() => setLanesOpen((v) => !v)}
               aria-expanded={lanesOpen}
               aria-controls="phase-lanes"
-              className="sm:hidden w-full px-3 py-2 min-h-[36px] rounded-lg bg-slate-950/95 border border-slate-700 text-xs font-semibold text-slate-200 shadow-lg"
+              className="sm:hidden w-full px-3 py-2 min-h-[36px] rounded-lg bg-white border border-slate-200 text-xs font-semibold text-slate-700 shadow-md"
             >
               {lanesOpen ? "Hide phases" : `Phases (${phaseSummaries.length})`}
             </button>
@@ -493,18 +493,18 @@ export default function RoadmapCanvas({
               {phaseSummaries.map((p) => (
                 <div
                   key={p.phase}
-                  className="rounded-lg border border-slate-700/70 bg-slate-950/95 backdrop-blur px-2.5 py-2 shadow-lg"
+                  className="rounded-lg border border-slate-200 bg-white/95 backdrop-blur px-2.5 py-2 shadow-sm"
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-[11px] font-bold text-slate-200">
+                    <span className="text-[11px] font-bold text-slate-700">
                       {p.phase}. {p.name.replace(/^Phase\s+\d+\s*/i, "") || `Phase ${p.phase}`}
                     </span>
-                    <span className="text-[10px] font-semibold text-slate-400 shrink-0">
+                    <span className="text-[10px] font-semibold text-slate-500 shrink-0">
                       {p.completed}/{p.total} · {p.percentage}%
                     </span>
                   </div>
                   <div
-                    className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-slate-800 border border-slate-800"
+                    className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-slate-100 border border-slate-200"
                     role="progressbar"
                     aria-valuenow={p.percentage}
                     aria-valuemin={0}
@@ -512,7 +512,7 @@ export default function RoadmapCanvas({
                     aria-label={`${p.name} progress: ${p.completed} of ${p.total} nodes complete`}
                   >
                     <div
-                      className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 transition-all"
+                      className="h-full rounded-full bg-gradient-to-r from-blue-500 to-blue-600 transition-all"
                       style={{ width: `${p.percentage}%` }}
                     />
                   </div>
@@ -526,10 +526,10 @@ export default function RoadmapCanvas({
                 onClick={() => setShowCritical((v) => !v)}
                 aria-pressed={showCritical}
                 className={cn(
-                  "w-full flex items-center justify-center gap-1.5 px-2.5 py-2 min-h-[36px] rounded-lg border text-[11px] font-semibold transition-colors shadow-lg",
+                  "w-full flex items-center justify-center gap-1.5 px-2.5 py-2 min-h-[36px] rounded-lg border text-[11px] font-semibold transition-colors shadow-sm",
                   showCritical
-                    ? "bg-amber-950/70 border-amber-800/70 text-amber-200"
-                    : "bg-slate-950/95 border-slate-700 text-slate-400 hover:text-slate-200"
+                    ? "bg-amber-50 border-amber-300 text-amber-700"
+                    : "bg-white border-slate-200 text-slate-500 hover:text-slate-700"
                 )}
               >
                 <Route size={12} aria-hidden />
@@ -547,7 +547,7 @@ export default function RoadmapCanvas({
         <Panel position="bottom-center">
           <nav
             aria-label="Roadmap timeline"
-            className="w-[calc(100vw-2rem)] max-w-2xl rounded-xl border border-slate-800 bg-slate-950/80 backdrop-blur-md shadow-xl px-3 py-1.5 flex items-center gap-1 overflow-x-auto text-[11px]"
+            className="w-[calc(100vw-2rem)] max-w-2xl rounded-xl border border-slate-200 bg-white/95 backdrop-blur-md shadow-md px-3 py-1.5 flex items-center gap-1 overflow-x-auto text-[11px]"
           >
             <TimelineChip
               icon={<MapPin size={11} aria-hidden />}
@@ -556,19 +556,19 @@ export default function RoadmapCanvas({
               detail={timeline.current.detail}
               highlight
             />
-            <ChevronRight size={12} className="text-slate-600 shrink-0" aria-hidden />
+            <ChevronRight size={12} className="text-slate-300 shrink-0" aria-hidden />
             <TimelineChip
               label="Next milestone"
               title={timeline.nextMilestone.title}
               detail={timeline.nextMilestone.detail}
             />
-            <ChevronRight size={12} className="text-slate-600 shrink-0" aria-hidden />
+            <ChevronRight size={12} className="text-slate-300 shrink-0" aria-hidden />
             <TimelineChip
               label="Next phase"
               title={timeline.nextPhase.title}
               detail={timeline.nextPhase.detail}
             />
-            <ChevronRight size={12} className="text-slate-600 shrink-0" aria-hidden />
+            <ChevronRight size={12} className="text-slate-300 shrink-0" aria-hidden />
             <TimelineChip
               label="Final target"
               title={timeline.finalTarget.title}
@@ -581,13 +581,13 @@ export default function RoadmapCanvas({
       {/* Empty search/filter result — never leaves the user guessing */}
       {searchActive && visibleCount === 0 && (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center p-6">
-          <div className="pointer-events-auto max-w-sm rounded-xl border border-slate-700 bg-slate-950/95 px-5 py-4 text-center shadow-xl">
-            <p className="text-sm font-bold text-slate-100">
+          <div className="pointer-events-auto max-w-sm rounded-xl border border-slate-200 bg-white px-5 py-4 text-center shadow-xl">
+            <p className="text-sm font-bold text-slate-900">
               {filter !== "all"
                 ? `No ${activeFilterLabel.toLowerCase()} nodes in this roadmap.`
                 : `No nodes match “${query.trim()}”.`}
             </p>
-            <p className="mt-1 text-xs text-slate-400">
+            <p className="mt-1 text-xs text-slate-500">
               Try another filter, or clear the search — matching nodes stay
               prominent, others stay dimmed in the graph.
             </p>
@@ -596,7 +596,7 @@ export default function RoadmapCanvas({
                 setQuery("");
                 setFilter("all");
               }}
-              className="mt-3 px-4 py-1.5 min-h-[36px] rounded-lg bg-cyan-950/80 border border-cyan-700 text-cyan-200 text-xs font-semibold hover:bg-cyan-900/80"
+              className="mt-3 px-4 py-1.5 min-h-[36px] rounded-lg bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold hover:bg-blue-100"
             >
               Reset to All
             </button>
@@ -626,13 +626,13 @@ function TimelineChip({
       <div
         className={cn(
           "text-[9px] font-bold uppercase tracking-wider flex items-center gap-1",
-          highlight ? "text-cyan-300" : "text-slate-500"
+          highlight ? "text-blue-600" : "text-slate-400"
         )}
       >
         {icon}
         {label}
       </div>
-      <div className="truncate text-[11px] font-semibold text-slate-200">{title}</div>
+      <div className="truncate text-[11px] font-semibold text-slate-700">{title}</div>
       {detail && <div className="truncate text-[10px] text-slate-500">{detail}</div>}
     </div>
   );

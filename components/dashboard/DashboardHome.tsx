@@ -42,19 +42,19 @@ export default function DashboardHome({
   return (
     <div className="space-y-6 pb-12 animate-fade-in max-w-7xl mx-auto">
       {/* Executive Header Banner */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-6 rounded-2xl bg-slate-900 border border-slate-800 shadow-xl">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
         <div className="space-y-1 max-w-2xl">
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-blue-400">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-blue-600">
               Career Target Strategy
             </span>
-            <span className="text-slate-600 text-xs">•</span>
-            <span className="text-xs text-slate-400">Active Pipeline</span>
+            <span className="text-slate-300 text-xs">•</span>
+            <span className="text-xs text-slate-500">Active Pipeline</span>
           </div>
-          <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
+          <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
             {metrics.targetRole}
           </h1>
-          <p className="text-xs text-slate-400 leading-relaxed">
+          <p className="text-xs text-slate-500 leading-relaxed">
             Dependency-driven career execution plan calibrated against real-world competencies and portfolio artifacts.
           </p>
         </div>
@@ -63,15 +63,15 @@ export default function DashboardHome({
         <div className="flex items-center gap-3 w-full md:w-auto">
           <button
             onClick={onOpenAdjust}
-            className="flex-1 md:flex-initial px-4 py-2.5 rounded-xl bg-purple-950/70 hover:bg-purple-900/80 border border-purple-700/70 text-purple-200 text-xs font-semibold transition-all flex items-center justify-center gap-2 shadow-sm"
+            className="flex-1 md:flex-initial px-4 py-2.5 rounded-xl bg-violet-50 hover:bg-violet-100 border border-violet-200 text-violet-700 text-xs font-semibold transition-all flex items-center justify-center gap-2 shadow-sm"
           >
-            <Sparkles size={14} className="text-purple-400" />
+            <Sparkles size={14} className="text-violet-600" />
             <span>I already know...</span>
           </button>
 
           <button
             onClick={onContinueRoadmap}
-            className="flex-1 md:flex-initial px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold shadow-lg shadow-blue-900/40 transition-all flex items-center justify-center gap-2"
+            className="flex-1 md:flex-initial px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-600/25 transition-all flex items-center justify-center gap-2"
           >
             <span>Continue Roadmap</span>
             <ArrowRight size={14} />
@@ -82,78 +82,78 @@ export default function DashboardHome({
       {/* KPI Metrics Cards Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
         {/* Metric 1: Overall Progress */}
-        <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
-          <div className="flex items-center justify-between text-slate-400">
+        <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm space-y-1">
+          <div className="flex items-center justify-between text-slate-500">
             <span className="text-[11px] font-medium">Overall Progress</span>
-            <Award size={14} className="text-blue-400" />
+            <Award size={14} className="text-blue-600" />
           </div>
-          <div className="text-xl font-extrabold text-white">{metrics.overallProgress}%</div>
-          <div className="h-1.5 w-full bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+          <div className="text-xl font-extrabold text-slate-900">{metrics.overallProgress}%</div>
+          <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200">
             <div
-              className="h-full bg-blue-500 transition-all duration-500"
+              className="h-full bg-blue-600 transition-all duration-500"
               style={{ width: `${metrics.overallProgress}%` }}
             />
           </div>
         </div>
 
         {/* Metric 2: Current Phase */}
-        <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
-          <div className="flex items-center justify-between text-slate-400">
+        <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm space-y-1">
+          <div className="flex items-center justify-between text-slate-500">
             <span className="text-[11px] font-medium">Current Phase</span>
-            <Layers size={14} className="text-purple-400" />
+            <Layers size={14} className="text-violet-600" />
           </div>
-          <div className="text-xl font-extrabold text-white">
+          <div className="text-xl font-extrabold text-slate-900">
             Phase {metrics.currentPhase}
           </div>
-          <div className="text-[11px] text-slate-400">of {metrics.totalPhases} phases</div>
+          <div className="text-[11px] text-slate-500">of {metrics.totalPhases} phases</div>
         </div>
 
         {/* Metric 3: Time Remaining */}
-        <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
-          <div className="flex items-center justify-between text-slate-400">
+        <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm space-y-1">
+          <div className="flex items-center justify-between text-slate-500">
             <span className="text-[11px] font-medium">Estimated Remaining</span>
-            <Clock size={14} className="text-amber-400" />
+            <Clock size={14} className="text-amber-600" />
           </div>
-          <div className="text-xl font-extrabold text-white">
+          <div className="text-xl font-extrabold text-slate-900">
             {formatHours(metrics.hoursRemaining)}
           </div>
-          <div className="text-[11px] text-slate-400">of {formatHours(metrics.totalHours)} total</div>
+          <div className="text-[11px] text-slate-500">of {formatHours(metrics.totalHours)} total</div>
         </div>
 
         {/* Metric 4: Skills Completed */}
-        <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
-          <div className="flex items-center justify-between text-slate-400">
+        <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm space-y-1">
+          <div className="flex items-center justify-between text-slate-500">
             <span className="text-[11px] font-medium">Skills Mastered</span>
-            <CheckCircle2 size={14} className="text-emerald-400" />
+            <CheckCircle2 size={14} className="text-emerald-600" />
           </div>
-          <div className="text-xl font-extrabold text-white">
+          <div className="text-xl font-extrabold text-slate-900">
             {metrics.skillsCompleted}
           </div>
-          <div className="text-[11px] text-slate-400">verified skills</div>
+          <div className="text-[11px] text-slate-500">verified skills</div>
         </div>
 
         {/* Metric 5: Skills Remaining */}
-        <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
-          <div className="flex items-center justify-between text-slate-400">
+        <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm space-y-1">
+          <div className="flex items-center justify-between text-slate-500">
             <span className="text-[11px] font-medium">Skills In Queue</span>
-            <TrendingUp size={14} className="text-cyan-400" />
+            <TrendingUp size={14} className="text-cyan-600" />
           </div>
-          <div className="text-xl font-extrabold text-white">
+          <div className="text-xl font-extrabold text-slate-900">
             {metrics.skillsRemaining}
           </div>
-          <div className="text-[11px] text-slate-400">to complete</div>
+          <div className="text-[11px] text-slate-500">to complete</div>
         </div>
 
         {/* Metric 6: Projects Completed */}
-        <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
-          <div className="flex items-center justify-between text-slate-400">
+        <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm space-y-1">
+          <div className="flex items-center justify-between text-slate-500">
             <span className="text-[11px] font-medium">Capstones</span>
-            <FolderGit2 size={14} className="text-rose-400" />
+            <FolderGit2 size={14} className="text-rose-600" />
           </div>
-          <div className="text-xl font-extrabold text-white">
+          <div className="text-xl font-extrabold text-slate-900">
             {metrics.projectsCompleted}/{metrics.totalProjects}
           </div>
-          <div className="text-[11px] text-slate-400">portfolio deliverables</div>
+          <div className="text-[11px] text-slate-500">portfolio deliverables</div>
         </div>
       </div>
 
@@ -167,22 +167,22 @@ export default function DashboardHome({
       </div>
 
       {/* Next Milestone & Roadmap Preview Strip */}
-      <div className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-amber-950/60 border border-amber-800/60 text-amber-400">
+          <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-600">
             <Milestone size={20} />
           </div>
           <div>
-            <div className="text-[11px] uppercase font-bold text-amber-400 tracking-wider">
+            <div className="text-[11px] uppercase font-bold text-amber-600 tracking-wider">
               Upcoming Phase Milestone
             </div>
-            <div className="text-sm font-bold text-white">{metrics.nextMilestone}</div>
+            <div className="text-sm font-bold text-slate-900">{metrics.nextMilestone}</div>
           </div>
         </div>
 
         <button
           onClick={onContinueRoadmap}
-          className="text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1.5 group"
+          className="text-xs font-semibold text-blue-600 hover:text-blue-700 transition-colors flex items-center gap-1.5 group"
         >
           <span>Explore Interactive Dependency Graph</span>
           <ChevronRight size={14} className="group-hover:translate-x-0.5 transition-transform" />

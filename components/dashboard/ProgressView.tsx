@@ -43,31 +43,31 @@ export default function ProgressView() {
   return (
     <div className="space-y-6 pb-12 animate-fade-in max-w-7xl mx-auto">
       {/* Header */}
-      <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
-            <TrendingUp className="text-cyan-400" size={24} />
+          <h1 className="text-xl md:text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <TrendingUp className="text-cyan-600" size={24} />
             Progress & Velocity Calibration
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-500 mt-1">
             Tracking mastery across phases, study hours, and competency milestones.
           </p>
         </div>
 
         <div className="text-right">
-          <div className="text-2xl font-black text-white">{metrics.progress.percentage}%</div>
-          <div className="text-[10px] text-slate-400 uppercase font-semibold">Total Completion</div>
+          <div className="text-2xl font-black text-slate-900">{metrics.progress.percentage}%</div>
+          <div className="text-[10px] text-slate-500 uppercase font-semibold">Total Completion</div>
         </div>
       </div>
 
       {/* Overview Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
-          <div className="flex items-center justify-between text-xs text-slate-400">
+        <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-2">
+          <div className="flex items-center justify-between text-xs text-slate-500">
             <span>Verified Knowledge</span>
-            <CheckCircle2 size={16} className="text-emerald-400" />
+            <CheckCircle2 size={16} className="text-emerald-600" />
           </div>
-          <div className="text-2xl font-black text-white">
+          <div className="text-2xl font-black text-slate-900">
             {metrics.progress.completed + metrics.progress.known} / {metrics.progress.total}
           </div>
           <p className="text-[11px] text-slate-500">
@@ -75,12 +75,12 @@ export default function ProgressView() {
           </p>
         </div>
 
-        <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
-          <div className="flex items-center justify-between text-xs text-slate-400">
+        <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-2">
+          <div className="flex items-center justify-between text-xs text-slate-500">
             <span>Study Hours Burned</span>
-            <Clock size={16} className="text-blue-400" />
+            <Clock size={16} className="text-blue-600" />
           </div>
-          <div className="text-2xl font-black text-white">
+          <div className="text-2xl font-black text-slate-900">
             {formatHours(metrics.completedHours)}
           </div>
           <p className="text-[11px] text-slate-500">
@@ -88,12 +88,12 @@ export default function ProgressView() {
           </p>
         </div>
 
-        <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
-          <div className="flex items-center justify-between text-xs text-slate-400">
+        <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-2">
+          <div className="flex items-center justify-between text-xs text-slate-500">
             <span>Remaining Runway</span>
-            <Calendar size={16} className="text-amber-400" />
+            <Calendar size={16} className="text-amber-600" />
           </div>
-          <div className="text-2xl font-black text-white">
+          <div className="text-2xl font-black text-slate-900">
             {formatHours(metrics.remainingHours)}
           </div>
           <p className="text-[11px] text-slate-500">
@@ -103,9 +103,9 @@ export default function ProgressView() {
       </div>
 
       {/* Phase Progression Breakdown */}
-      <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-5">
-        <h2 className="text-base font-bold text-white flex items-center gap-2">
-          <Layers size={18} className="text-purple-400" />
+      <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-5">
+        <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
+          <Layers size={18} className="text-violet-600" />
           Phase Progression Matrix
         </h2>
 
@@ -113,30 +113,30 @@ export default function ProgressView() {
           {metrics.phases.map((ph) => (
             <div
               key={ph.phaseNum}
-              className="p-4 rounded-xl bg-slate-950/60 border border-slate-800/80 space-y-2"
+              className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2"
             >
               <div className="flex items-center justify-between text-xs">
                 <div className="flex items-center gap-2">
                   <span
                     className={cn(
-                      "px-2.5 py-0.5 rounded-lg text-xs font-bold border",
+                      "px-2.5 py-0.5 rounded-lg text-xs font-bold border bg-white",
                       getPhaseBorderColor(ph.phaseNum),
-                      "text-slate-200"
+                      "text-slate-700"
                     )}
                   >
                     Phase {ph.phaseNum}
                   </span>
-                  <span className="text-slate-300 font-medium">
+                  <span className="text-slate-600 font-medium">
                     {ph.done} of {ph.total} Skills Cleared
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-slate-400 text-[11px]">{formatHours(ph.hours)}</span>
-                  <span className="font-bold text-white w-8 text-right">{ph.pct}%</span>
+                  <span className="text-slate-500 text-[11px]">{formatHours(ph.hours)}</span>
+                  <span className="font-bold text-slate-900 w-8 text-right">{ph.pct}%</span>
                 </div>
               </div>
 
-              <div className="h-2 w-full bg-slate-900 rounded-full overflow-hidden border border-slate-800">
+              <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200">
                 <div
                   className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-500"
                   style={{ width: `${ph.pct}%` }}
@@ -151,12 +151,12 @@ export default function ProgressView() {
                     className={cn(
                       "text-[10px] px-2 py-0.5 rounded border",
                       n.status === "completed" || n.status === "known"
-                        ? "bg-emerald-950/40 text-emerald-300 border-emerald-800/60"
+                        ? "bg-emerald-50 text-emerald-700 border-emerald-200"
                         : n.status === "in_progress"
-                        ? "bg-amber-950/40 text-amber-300 border-amber-800/60"
+                        ? "bg-amber-50 text-amber-700 border-amber-200"
                         : n.status === "available"
-                        ? "bg-blue-950/40 text-blue-300 border-blue-800/60"
-                        : "bg-slate-900 text-slate-500 border-slate-800"
+                        ? "bg-blue-50 text-blue-700 border-blue-200"
+                        : "bg-white text-slate-400 border-slate-200"
                     )}
                   >
                     {n.title}

@@ -30,7 +30,7 @@ export default function DashboardShell() {
   if (!roadmap) return null;
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-slate-950 text-slate-100 select-none">
+    <div className="flex h-screen w-screen overflow-hidden bg-slate-50 text-slate-900 select-none">
       {/* Sidebar Navigation */}
       <DashboardSidebar
         isOpen={isSidebarOpen}
@@ -41,10 +41,10 @@ export default function DashboardShell() {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col h-full min-w-0 overflow-hidden">
         {/* Mobile Header Bar */}
-        <div className="lg:hidden p-3.5 border-b border-slate-800 bg-slate-900/95 flex items-center justify-between">
+        <div className="lg:hidden p-3.5 border-b border-slate-200 bg-white flex items-center justify-between">
           <button
             onClick={() => setIsSidebarOpen(true)}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
             aria-label="Open sidebar"
           >
             <Menu size={20} />
@@ -54,14 +54,14 @@ export default function DashboardShell() {
             <div className="h-7 w-7 rounded-lg bg-blue-600 flex items-center justify-center text-white flex-shrink-0">
               <Compass size={16} />
             </div>
-            <span className="text-xs font-bold text-white truncate max-w-[180px]">
+            <span className="text-xs font-bold text-slate-900 truncate max-w-[180px]">
               {roadmap.goal}
             </span>
           </div>
 
           <button
             onClick={() => setIsAdjustOpen(true)}
-            className="p-1.5 rounded-lg bg-purple-950 text-purple-300 border border-purple-800 text-xs font-semibold"
+            className="p-1.5 rounded-lg bg-violet-50 text-violet-700 border border-violet-200 text-xs font-semibold"
           >
             <Sparkles size={14} />
           </button>

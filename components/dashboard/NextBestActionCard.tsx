@@ -30,8 +30,8 @@ export default function NextBestActionCard({ onOpenNode }: NextBestActionCardPro
 
   if (!node) {
     return (
-      <div className="relative overflow-hidden rounded-2xl bg-slate-900 border border-slate-800 p-5">
-        <p className="text-xs text-slate-400 leading-relaxed">
+      <div className="relative overflow-hidden rounded-2xl bg-white border border-slate-200 p-5 shadow-sm">
+        <p className="text-xs text-slate-500 leading-relaxed">
           No actionable next step yet. Generate a roadmap to identify your highest-ROI next skill.
         </p>
       </div>
@@ -39,37 +39,37 @@ export default function NextBestActionCard({ onOpenNode }: NextBestActionCardPro
   }
 
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-950/80 via-indigo-950/60 to-purple-950/80 border border-blue-800/50 p-5 shadow-2xl">
-      {/* Background ambient glow */}
-      <div className="absolute -top-12 -right-12 w-48 h-48 bg-blue-500/15 rounded-full blur-3xl pointer-events-none" />
+    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-50 via-indigo-50/60 to-violet-50 border border-blue-200 p-5 shadow-sm">
+      {/* Background ambient accent */}
+      <div className="absolute -top-12 -right-12 w-48 h-48 bg-blue-200/40 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         {/* Left Information */}
         <div className="space-y-2 max-w-2xl">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-400/30 text-xs font-semibold">
-              <Zap size={12} className="text-amber-400" />
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-700 border border-blue-200 text-xs font-semibold">
+              <Zap size={12} className="text-amber-500" />
               What Should I Do Next?
             </span>
-            <span className="text-xs text-slate-400">• Highest ROI Next Step</span>
+            <span className="text-xs text-slate-500">• Highest ROI Next Step</span>
           </div>
 
           <div className="flex items-center gap-2.5 flex-wrap">
-            <h2 className="text-lg md:text-xl font-bold text-white tracking-tight">
+            <h2 className="text-lg md:text-xl font-bold text-slate-900 tracking-tight">
               {node.title}
             </h2>
             <div className="flex items-center gap-1.5">
-              <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-blue-900/60 text-blue-300 border border-blue-700/60">
+              <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-blue-100 text-blue-700 border border-blue-200">
                 Phase {node.phase}
               </span>
-              <span className="text-[11px] text-slate-400 flex items-center gap-1 bg-slate-900/60 px-2 py-0.5 rounded border border-slate-800">
+              <span className="text-[11px] text-slate-500 flex items-center gap-1 bg-white/70 px-2 py-0.5 rounded border border-slate-200">
                 <Clock size={11} />
                 {formatHours(estimatedHours)}
               </span>
             </div>
           </div>
 
-          <p className="text-xs text-slate-300 leading-relaxed">
+          <p className="text-xs text-slate-600 leading-relaxed">
             {reason}
           </p>
         </div>
@@ -79,17 +79,17 @@ export default function NextBestActionCard({ onOpenNode }: NextBestActionCardPro
           {node.status !== "known" && (
             <button
               onClick={() => updateNodeStatus(node.id, "known")}
-              className="px-3.5 py-2 rounded-xl bg-purple-950/80 hover:bg-purple-900 border border-purple-700/80 text-purple-200 text-xs font-semibold transition-all flex items-center gap-1.5 shadow-sm"
+              className="px-3.5 py-2 rounded-xl bg-white hover:bg-violet-50 border border-violet-200 text-violet-700 text-xs font-semibold transition-all flex items-center gap-1.5 shadow-sm"
               title="Mark this skill as already mastered"
             >
-              <Sparkles size={13} className="text-purple-400" />
+              <Sparkles size={13} className="text-violet-600" />
               Already Know This
             </button>
           )}
 
           <button
             onClick={() => onOpenNode(node.id)}
-            className="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold shadow-lg shadow-blue-900/40 transition-all flex items-center gap-1.5 flex-shrink-0"
+            className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-600/25 transition-all flex items-center gap-1.5 flex-shrink-0"
           >
             <span>Open Action Pack</span>
             <ArrowRight size={14} />

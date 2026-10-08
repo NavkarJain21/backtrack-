@@ -16,9 +16,9 @@ export default function Home() {
 
   if (!hasHydrated) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" />
+          <div className="w-8 h-8 border-2 border-blue-600/20 border-t-blue-600 rounded-full animate-spin" />
           <span className="text-xs text-slate-500 font-mono">Loading Backtrack...</span>
         </div>
       </div>
