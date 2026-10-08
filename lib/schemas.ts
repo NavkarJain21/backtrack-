@@ -52,6 +52,50 @@ export const ActionItemSchema = z.object({
 });
 export type ActionItem = z.infer<typeof ActionItemSchema>;
 
+// ── Project evidence schemas (all optional → backwards compatible) ──────────
+
+export const ProjectMilestoneSchema = ActionItemSchema;
+export type ProjectMilestone = z.infer<typeof ProjectMilestoneSchema>;
+
+export const GithubGuidanceSchema = z.object({
+  repoSetup: z.string().min(1).max(1000),
+  repoStructure: z.array(z.string().min(1).max(200)).max(15),
+  readmeRequirements: z.array(z.string().min(1).max(200)).max(15),
+  commitGuidance: z.string().min(1).max(1000),
+  suggestedIssues: z.array(z.string().min(1).max(300)).max(15),
+});
+export type GithubGuidance = z.infer<typeof GithubGuidanceSchema>;
+
+export const PortfolioEvidenceItemSchema = z.object({
+  category: z.string().min(1).max(60),
+  whatItProves: z.string().min(1).max(500),
+});
+export type PortfolioEvidenceItem = z.infer<typeof PortfolioEvidenceItemSchema>;
+
+export const RequirementMappingSchema = z.object({
+  requirement: z.string().min(1).max(300),
+  evidence: z.string().min(1).max(500),
+  inferred: z.boolean().default(false),
+});
+export type RequirementMapping = z.infer<typeof RequirementMappingSchema>;
+
+// Shared optional project fields (node + detail response stay in sync)
+const ProjectFields = {
+  difficulty: z.string().min(1).max(100).optional(),
+  estimatedEffort: z.string().min(1).max(100).optional(),
+  expectedOutcome: z.string().min(1).max(1000).optional(),
+  techStack: z.array(z.string().min(1).max(80)).max(15).optional(),
+  skillsDemonstrated: z.array(z.string().min(1).max(80)).max(15).optional(),
+  milestones: z.array(ProjectMilestoneSchema).max(12).optional(),
+  doneWhen: z.array(z.string().min(1).max(300)).max(10).optional(),
+  githubGuidance: GithubGuidanceSchema.optional(),
+  readmeChecklist: z.array(ProjectMilestoneSchema).max(12).optional(),
+  portfolioDescription: z.string().min(1).max(1500).optional(),
+  interviewQuestions: z.array(z.string().min(1).max(500)).max(12).optional(),
+  portfolioEvidence: z.array(PortfolioEvidenceItemSchema).max(8).optional(),
+  requirementMapping: z.array(RequirementMappingSchema).max(8).optional(),
+};
+
 // ── Roadmap node ─────────────────────────────────────────────────────────────
 export const RoadmapNodeSchema = z.object({
   id: z.string().min(1).max(100),
@@ -67,6 +111,7 @@ export const RoadmapNodeSchema = z.object({
   actionItems: z.array(ActionItemSchema).optional(),
   resources: z.array(ResourceLinkSchema).optional(),
   searchQuery: z.string().max(200).optional(),
+  ...ProjectFields,
 });
 export type RoadmapNode = z.infer<typeof RoadmapNodeSchema>;
 
@@ -101,6 +146,7 @@ export const NodeDetailRequestSchema = z.object({
   goal: z.string().min(1).max(500),
   phase: z.number().int().min(1),
   tags: z.array(z.string()).optional(),
+  isProject: z.boolean().optional(),
 });
 export type NodeDetailRequest = z.infer<typeof NodeDetailRequestSchema>;
 
@@ -109,6 +155,7 @@ export const NodeDetailResponseSchema = z.object({
   actionItems: z.array(ActionItemSchema).min(1).max(20),
   resources: z.array(ResourceLinkSchema).max(10),
   searchQuery: z.string().min(1).max(200),
+  ...ProjectFields,
 });
 export type NodeDetailResponse = z.infer<typeof NodeDetailResponseSchema>;
 
@@ -166,6 +213,7 @@ export interface AppState {
   updateNodeStatus: (nodeId: string, status: NodeStatus) => void;
   updateNodeDetail: (nodeId: string, detail: NodeDetailResponse) => void;
   toggleActionItem: (nodeId: string, itemId: string) => void;
+  toggleDetailItem: (nodeId: string, itemId: string) => void;
   applyAdjustment: (response: AdjustRoadmapResponse) => void;
   setLastGoal: (goal: string) => void;
   reset: () => void;

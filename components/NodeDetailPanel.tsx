@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useStore } from "@/lib/store";
+import { isProjectNode } from "@/lib/project-evidence";
+import ProjectWorkspace from "@/components/ProjectWorkspace";
 import {
   getStatusBg,
   getStatusLabel,
@@ -64,18 +66,39 @@ export default function NodeDetailPanel({ nodeId, onClose }: NodeDetailPanelProp
 
   const node = roadmap?.nodes.find((n) => n.id === nodeId);
   const cachedDetail = nodeDetailCache[nodeId];
+  const allNodes = useMemo(() => roadmap?.nodes ?? [], [roadmap]);
+  const projectNode = node ? isProjectNode(node, allNodes) : false;
 
   // Fetch node detail if not in cache or node properties
   useEffect(() => {
     if (!node || !roadmap) return;
 
-    if (cachedDetail || (node.why && node.actionItems && node.resources)) {
+    // Project nodes carry their own workspace payload; skill nodes use the classic check.
+    const isProject = isProjectNode(node, roadmap.nodes);
+    const hasFullDetail =
+      cachedDetail ||
+      (node.why && node.actionItems && node.resources && (!isProject || node.milestones));
+
+    if (hasFullDetail) {
       if (!cachedDetail && node.why && node.actionItems && node.resources) {
         updateNodeDetail(nodeId, {
           why: node.why,
           actionItems: node.actionItems,
           resources: node.resources,
           searchQuery: node.searchQuery || `${node.title} tutorial guide`,
+          ...(node.difficulty !== undefined && { difficulty: node.difficulty }),
+          ...(node.estimatedEffort !== undefined && { estimatedEffort: node.estimatedEffort }),
+          ...(node.expectedOutcome !== undefined && { expectedOutcome: node.expectedOutcome }),
+          ...(node.techStack !== undefined && { techStack: node.techStack }),
+          ...(node.skillsDemonstrated !== undefined && { skillsDemonstrated: node.skillsDemonstrated }),
+          ...(node.milestones !== undefined && { milestones: node.milestones }),
+          ...(node.doneWhen !== undefined && { doneWhen: node.doneWhen }),
+          ...(node.githubGuidance !== undefined && { githubGuidance: node.githubGuidance }),
+          ...(node.readmeChecklist !== undefined && { readmeChecklist: node.readmeChecklist }),
+          ...(node.portfolioDescription !== undefined && { portfolioDescription: node.portfolioDescription }),
+          ...(node.interviewQuestions !== undefined && { interviewQuestions: node.interviewQuestions }),
+          ...(node.portfolioEvidence !== undefined && { portfolioEvidence: node.portfolioEvidence }),
+          ...(node.requirementMapping !== undefined && { requirementMapping: node.requirementMapping }),
         });
       }
       return;
@@ -96,6 +119,7 @@ export default function NodeDetailPanel({ nodeId, onClose }: NodeDetailPanelProp
             goal: roadmap!.goal,
             phase: node!.phase,
             tags: node!.tags,
+            isProject,
           }),
         });
 
@@ -236,7 +260,8 @@ export default function NodeDetailPanel({ nodeId, onClose }: NodeDetailPanelProp
         </div>
       </div>
 
-      {/* Tabs */}
+      {/* Tabs — skill nodes keep the classic action-pack experience */}
+      {!projectNode && (
       <div className="flex border-b border-slate-800 px-5 bg-slate-900">
         <button
           onClick={() => setActiveTab("action")}
@@ -287,6 +312,7 @@ export default function NodeDetailPanel({ nodeId, onClose }: NodeDetailPanelProp
           Deep Dive
         </button>
       </div>
+      )}
 
       {/* Content Area */}
       <div className="flex-1 overflow-y-auto p-5 space-y-4">
@@ -294,10 +320,14 @@ export default function NodeDetailPanel({ nodeId, onClose }: NodeDetailPanelProp
           <div className="py-12 flex flex-col items-center justify-center text-center space-y-3">
             <RefreshCw size={28} className="animate-spin text-blue-400" />
             <p className="text-sm font-medium text-slate-300">
-              Generating personalized action pack with AI...
+              {projectNode
+                ? "Generating project workspace with AI..."
+                : "Generating personalized action pack with AI..."}
             </p>
             <p className="text-xs text-slate-500 max-w-xs">
-              Tailoring steps, curated resources, and curriculum specific to your career goal.
+              {projectNode
+                ? "Planning milestones, portfolio evidence, and GitHub guidance specific to this project."
+                : "Tailoring steps, curated resources, and curriculum specific to your career goal."}
             </p>
           </div>
         ) : error ? (
@@ -318,6 +348,8 @@ export default function NodeDetailPanel({ nodeId, onClose }: NodeDetailPanelProp
               Retry
             </button>
           </div>
+        ) : projectNode && roadmap ? (
+          <ProjectWorkspace node={node} allNodes={allNodes} goal={roadmap.goal} />
         ) : (
           <>
             {/* Action Items Tab */}

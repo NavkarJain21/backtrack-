@@ -1,15 +1,20 @@
 "use client";
 
 import { useStore } from "@/lib/store";
-import { FolderGit2, CheckCircle2, Clock, ArrowRight, Sparkles, Layers } from "lucide-react";
+import { FolderGit2, CheckCircle2, Clock, ArrowRight, Sparkles, Layers, Award } from "lucide-react";
 import { getStatusBg, getStatusColor, getStatusLabel, formatHours, cn } from "@/lib/utils";
+import {
+  deriveMilestones,
+  getChecklistProgress,
+  isEvidenceReady,
+} from "@/lib/project-evidence";
 
 interface ProjectsViewProps {
   onOpenNode: (nodeId: string) => void;
 }
 
 export default function ProjectsView({ onOpenNode }: ProjectsViewProps) {
-  const { roadmap } = useStore();
+  const { roadmap, nodeDetailCache, actionItemProgress } = useStore();
 
   if (!roadmap) return null;
 
@@ -53,7 +58,15 @@ export default function ProjectsView({ onOpenNode }: ProjectsViewProps) {
         </div>
       ) : (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {projectNodes.map((project, idx) => (
+        {projectNodes.map((project, idx) => {
+          const cached = nodeDetailCache[project.id];
+          const milestones = deriveMilestones(
+            project,
+            cached?.milestones ?? project.milestones
+          ).items;
+          const progress = getChecklistProgress(project.id, milestones, actionItemProgress);
+          const ready = isEvidenceReady(project.id, milestones, actionItemProgress);
+          return (
           <div
             key={project.id}
             className="p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition-all shadow-xl flex flex-col justify-between"
@@ -89,6 +102,36 @@ export default function ProjectsView({ onOpenNode }: ProjectsViewProps) {
                   </span>
                 ))}
               </div>
+
+              {/* Milestone progress (local, from actual checklist state) */}
+              <div className="mb-4">
+                <div className="flex items-center justify-between text-[11px] mb-1">
+                  <span className="text-slate-500 font-medium">
+                    Milestones {progress.done}/{progress.total}
+                  </span>
+                  {ready ? (
+                    <span className="inline-flex items-center gap-1 font-bold text-emerald-300">
+                      <Award size={12} aria-hidden />
+                      Evidence Ready
+                    </span>
+                  ) : (
+                    <span className="font-bold text-slate-300">{progress.percentage}%</span>
+                  )}
+                </div>
+                <div
+                  className="h-1.5 w-full overflow-hidden rounded-full bg-slate-950 border border-slate-800"
+                  role="progressbar"
+                  aria-valuenow={progress.percentage}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-label={`${project.title} milestones ${progress.done} of ${progress.total} complete`}
+                >
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all"
+                    style={{ width: `${progress.percentage}%` }}
+                  />
+                </div>
+              </div>
             </div>
 
             <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between">
@@ -106,7 +149,8 @@ export default function ProjectsView({ onOpenNode }: ProjectsViewProps) {
               </button>
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
       )}
     </div>

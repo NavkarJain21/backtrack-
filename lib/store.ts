@@ -82,7 +82,7 @@ export const useStore = create<AppState>()(
         const { roadmap, nodeDetailCache } = get();
         if (!roadmap) return;
 
-        // Merge detail into node
+        // Merge detail into node (including optional project fields)
         const updated = {
           ...roadmap,
           nodes: roadmap.nodes.map((n) =>
@@ -93,6 +93,19 @@ export const useStore = create<AppState>()(
                   actionItems: detail.actionItems,
                   resources: detail.resources,
                   searchQuery: detail.searchQuery,
+                  ...(detail.difficulty !== undefined && { difficulty: detail.difficulty }),
+                  ...(detail.estimatedEffort !== undefined && { estimatedEffort: detail.estimatedEffort }),
+                  ...(detail.expectedOutcome !== undefined && { expectedOutcome: detail.expectedOutcome }),
+                  ...(detail.techStack !== undefined && { techStack: detail.techStack }),
+                  ...(detail.skillsDemonstrated !== undefined && { skillsDemonstrated: detail.skillsDemonstrated }),
+                  ...(detail.milestones !== undefined && { milestones: detail.milestones }),
+                  ...(detail.doneWhen !== undefined && { doneWhen: detail.doneWhen }),
+                  ...(detail.githubGuidance !== undefined && { githubGuidance: detail.githubGuidance }),
+                  ...(detail.readmeChecklist !== undefined && { readmeChecklist: detail.readmeChecklist }),
+                  ...(detail.portfolioDescription !== undefined && { portfolioDescription: detail.portfolioDescription }),
+                  ...(detail.interviewQuestions !== undefined && { interviewQuestions: detail.interviewQuestions }),
+                  ...(detail.portfolioEvidence !== undefined && { portfolioEvidence: detail.portfolioEvidence }),
+                  ...(detail.requirementMapping !== undefined && { requirementMapping: detail.requirementMapping }),
                 }
               : n
           ),
@@ -104,31 +117,54 @@ export const useStore = create<AppState>()(
         });
       },
 
-      toggleActionItem: (nodeId, itemId) => {
+      toggleDetailItem: (nodeId, itemId) => {
         const key = `${nodeId}-${itemId}`;
-        const { actionItemProgress, roadmap } = get();
+        const { actionItemProgress, roadmap, nodeDetailCache } = get();
         const newVal = !actionItemProgress[key];
-
-        // Also update roadmap node action items
         const newProgress = { ...actionItemProgress, [key]: newVal };
+
+        const flip = <T extends { id: string }>(list: T[] | undefined): T[] | undefined =>
+          list?.map((item) =>
+            item.id === itemId ? { ...item, completed: newVal } as T : item
+          );
+
+        // Update cached detail lists (action items, milestones, README checklist)
+        const cached = nodeDetailCache[nodeId];
+        const newCache = cached
+          ? {
+              ...nodeDetailCache,
+              [nodeId]: {
+                ...cached,
+                actionItems: flip(cached.actionItems) ?? cached.actionItems,
+                ...(cached.milestones !== undefined && { milestones: flip(cached.milestones) }),
+                ...(cached.readmeChecklist !== undefined && { readmeChecklist: flip(cached.readmeChecklist) }),
+              },
+            }
+          : nodeDetailCache;
+
+        // Also update roadmap node item lists
         let updatedRoadmap = roadmap;
         if (roadmap) {
           updatedRoadmap = {
             ...roadmap,
             nodes: roadmap.nodes.map((n) => {
-              if (n.id !== nodeId || !n.actionItems) return n;
+              if (n.id !== nodeId) return n;
               return {
                 ...n,
-                actionItems: n.actionItems.map((item) =>
-                  item.id === itemId ? { ...item, completed: newVal } : item
-                ),
+                ...(n.actionItems && { actionItems: flip(n.actionItems) }),
+                ...(n.milestones && { milestones: flip(n.milestones) }),
+                ...(n.readmeChecklist && { readmeChecklist: flip(n.readmeChecklist) }),
               };
             }),
             updatedAt: new Date().toISOString(),
           };
         }
 
-        set({ actionItemProgress: newProgress, roadmap: updatedRoadmap });
+        set({ actionItemProgress: newProgress, roadmap: updatedRoadmap, nodeDetailCache: newCache });
+      },
+
+      toggleActionItem: (nodeId, itemId) => {
+        get().toggleDetailItem(nodeId, itemId);
       },
 
       applyAdjustment: (response) => {
