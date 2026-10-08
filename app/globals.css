@@ -21,6 +21,8 @@
   border-color: #334155 !important;
   color: #94a3b8 !important;
   fill: #94a3b8 !important;
+  width: 36px !important;
+  height: 36px !important;
 }
 
 .react-flow__controls-button:hover {
@@ -108,4 +110,33 @@
   background: rgba(15, 23, 42, 0.8);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+}
+
+/* Roadmap workspace: focus + motion */
+.roadmap-node:focus-visible {
+  outline: 2px solid #67e8f9;
+  outline-offset: 2px;
+}
+
+@media (max-width: 639px) {
+  .react-flow__minimap {
+    display: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .animate-fade-in,
+  .animate-slide-in-right,
+  .animate-pulse-glow,
+  .shimmer {
+    animation: none !important;
+  }
 }

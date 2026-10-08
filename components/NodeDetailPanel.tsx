@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useStore } from "@/lib/store";
 import {
   getStatusBg,
@@ -50,6 +50,17 @@ export default function NodeDetailPanel({ nodeId, onClose }: NodeDetailPanelProp
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copiedQuery, setCopiedQuery] = useState(false);
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  // Escape closes the panel; focus the close control on open for keyboard users.
+  useEffect(() => {
+    closeRef.current?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose, nodeId]);
 
   const node = roadmap?.nodes.find((n) => n.id === nodeId);
   const cachedDetail = nodeDetailCache[nodeId];
@@ -160,7 +171,16 @@ export default function NodeDetailPanel({ nodeId, onClose }: NodeDetailPanelProp
   };
 
   return (
-    <div className="fixed inset-y-0 right-0 z-40 w-full max-w-lg bg-slate-900/95 backdrop-blur-xl border-l border-slate-700/80 shadow-2xl flex flex-col animate-slide-in-right">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={`Node details: ${node.title}`}
+      className="fixed z-40 bg-slate-900/95 backdrop-blur-xl border-slate-700/80 shadow-2xl flex flex-col animate-slide-in-right sm:animate-slide-in-right inset-x-0 bottom-0 max-h-[88vh] rounded-t-2xl border-t sm:inset-x-auto sm:inset-y-0 sm:right-0 sm:left-auto sm:w-full sm:max-w-lg sm:max-h-none sm:rounded-none sm:border-t-0 sm:border-l"
+    >
+      {/* Mobile drag handle */}
+      <div className="sm:hidden pt-2 flex justify-center" aria-hidden>
+        <span className="h-1 w-10 rounded-full bg-slate-700" />
+      </div>
       {/* Top Header */}
       <div className="p-5 border-b border-slate-800 flex items-start justify-between gap-4">
         <div>
@@ -186,9 +206,10 @@ export default function NodeDetailPanel({ nodeId, onClose }: NodeDetailPanelProp
           <p className="text-xs text-slate-400 mt-1 leading-relaxed">{node.description}</p>
         </div>
         <button
+          ref={closeRef}
           onClick={onClose}
-          className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
-          aria-label="Close panel"
+          className="p-2 min-h-[36px] min-w-[36px] rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors flex items-center justify-center"
+          aria-label="Close node details"
         >
           <X size={20} />
         </button>
