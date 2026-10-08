@@ -33,6 +33,7 @@ import {
   Search,
   X,
   BookOpen,
+  ListFilter,
   Hammer,
   Briefcase,
   Award,
@@ -90,8 +91,8 @@ function layoutNodes(
   }
 
   const PHASE_WIDTH = 320;
-  const NODE_HEIGHT = 252;
-  const NODE_GAP = 28;
+  const NODE_HEIGHT = 190;
+  const NODE_GAP = 32;
   const PHASE_PADDING_TOP = 84;
 
   const result: Node[] = [];
@@ -154,12 +155,29 @@ function buildEdges(
       const isCritical = criticalEdgeIds.has(edgeKey);
       const emphasized = showCritical && isCritical;
 
-      let stroke = "#3b82f6";
-      if (node.status === "locked") stroke = "#475569";
-      else if (node.status === "completed") stroke = "#059669";
-      else if (node.status === "known") stroke = "#7c3aed";
-      else if (node.status === "in_progress") stroke = "#d97706";
-      if (emphasized) stroke = "#f59e0b";
+      let stroke = "#475569";
+      let opacity = 0.45;
+      if (node.status === "locked") {
+        stroke = "#3f4c5f";
+        opacity = 0.5;
+      } else if (node.status === "completed") {
+        stroke = "#047857";
+        opacity = 0.7;
+      } else if (node.status === "known") {
+        stroke = "#6d28d9";
+        opacity = 0.7;
+      } else if (node.status === "in_progress") {
+        stroke = "#d97706";
+        opacity = 0.9;
+      } else if (node.status === "available") {
+        stroke = "#3b82f6";
+        opacity = 0.8;
+      }
+      // Critical path: subtle amber guide — never a wall of orange.
+      if (emphasized) {
+        stroke = "#b45309";
+        opacity = 0.95;
+      }
 
       edges.push({
         id: edgeKey,
@@ -170,15 +188,15 @@ function buildEdges(
         zIndex: emphasized ? 5 : 0,
         style: {
           stroke,
-          strokeWidth: emphasized ? 3 : 2,
+          strokeWidth: emphasized ? 2.5 : 1.5,
           strokeDasharray: node.status === "locked" ? "5 5" : undefined,
-          opacity: emphasized ? 1 : 0.85,
+          opacity,
         },
         markerEnd: {
           type: MarkerType.ArrowClosed,
           color: stroke,
-          width: emphasized ? 22 : 18,
-          height: emphasized ? 22 : 18,
+          width: 16,
+          height: 16,
         },
       });
     }
@@ -210,6 +228,7 @@ export default function RoadmapCanvas({
   const [filter, setFilter] = useState<NodeFilter>("all");
   const [showCritical, setShowCritical] = useState(true);
   const [lanesOpen, setLanesOpen] = useState(false);
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   const kinds = useMemo(() => getNodeKinds(roadmap.nodes), [roadmap.nodes]);
   const youAreHereId = useMemo(
@@ -280,8 +299,131 @@ export default function RoadmapCanvas({
     setEdges(flowEdges);
   }, [flowEdges, setEdges]);
 
+  const searchActive = query.trim().length > 0 || filter !== "all";
+  const activeFilterLabel =
+    FILTERS.find((f) => f.value === filter)?.label ?? "All";
+
   return (
-    <div className="w-full h-full relative" role="region" aria-label="Roadmap graph workspace">
+    <div
+      className="flex w-full h-full min-w-0 flex-col relative"
+      role="region"
+      aria-label="Roadmap graph workspace"
+    >
+      {/* ── Dedicated toolbar (real layout space, never overlays the graph) ── */}
+      <div className="flex-shrink-0 border-b border-slate-800 bg-slate-950/90 px-3 py-2 space-y-2">
+        <div className="flex items-center gap-2">
+          <div className="relative flex-1 min-w-0">
+            <Search
+              size={14}
+              className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500"
+              aria-hidden
+            />
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Escape") {
+                  setQuery("");
+                  e.currentTarget.blur();
+                }
+              }}
+              placeholder="Search nodes, tags, or phase…"
+              aria-label="Search roadmap nodes by title, type, or phase"
+              className="w-full h-10 sm:h-9 rounded-lg bg-slate-900 border border-slate-700 pl-8 pr-8 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+            />
+            {query && (
+              <button
+                onClick={() => setQuery("")}
+                className="absolute right-1 top-1/2 -translate-y-1/2 p-2 min-h-[36px] min-w-[36px] text-slate-500 hover:text-slate-200 flex items-center justify-center"
+                aria-label="Clear search"
+              >
+                <X size={14} />
+              </button>
+            )}
+          </div>
+
+          {/* Mobile-only filters toggle */}
+          <button
+            onClick={() => setFiltersOpen((v) => !v)}
+            aria-expanded={filtersOpen}
+            aria-controls="roadmap-filter-group"
+            className="sm:hidden flex items-center gap-1.5 h-10 px-3 rounded-lg border border-slate-700 bg-slate-900 text-[11px] font-semibold text-slate-300 shrink-0"
+          >
+            <ListFilter size={13} aria-hidden />
+            {filter === "all" ? "Filters" : activeFilterLabel}
+          </button>
+        </div>
+
+        {/* Filter pills: hidden behind toggle on mobile, inline on sm+ */}
+        <div
+          id="roadmap-filter-group"
+          role="group"
+          aria-label="Filter nodes by type"
+          className={cn(
+            "flex flex-wrap gap-1.5",
+            !filtersOpen && "hidden sm:flex"
+          )}
+        >
+          {FILTERS.map(({ value, label, Icon }) => {
+            const pressed = filter === value;
+            return (
+              <button
+                key={value}
+                onClick={() => {
+                  setFilter(value);
+                  setFiltersOpen(false);
+                }}
+                aria-pressed={pressed}
+                className={cn(
+                  "flex items-center gap-1 px-2.5 h-9 min-w-[44px] rounded-lg text-[11px] font-semibold whitespace-nowrap border transition-colors",
+                  pressed
+                    ? "bg-cyan-950/80 border-cyan-700 text-cyan-200"
+                    : "bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-600"
+                )}
+              >
+                <Icon size={12} aria-hidden />
+                {label}
+              </button>
+            );
+          })}
+        </div>
+
+        {searchActive && (
+          <div
+            role="status"
+            aria-live="polite"
+            className="flex items-center justify-between gap-2 text-[11px] text-slate-400"
+          >
+            <span>
+              {query.trim() && (
+                <>
+                  Search: <span className="text-slate-200 font-semibold">“{query.trim()}”</span>{" "}
+                </>
+              )}
+              {filter !== "all" && (
+                <>
+                  Filter: <span className="text-slate-200 font-semibold">{activeFilterLabel}</span>{" "}
+                </>
+              )}
+              · {visibleCount} result{visibleCount === 1 ? "" : "s"}
+            </span>
+            <button
+              onClick={() => {
+                setQuery("");
+                setFilter("all");
+              }}
+              className="text-cyan-300 hover:text-cyan-200 font-semibold px-1"
+            >
+              Clear
+            </button>
+          </div>
+        )}
+        <span className="sr-only" role="status" aria-live="polite">
+          {visibleCount} of {roadmap.nodes.length} nodes shown
+        </span>
+      </div>
+
+      <div className="flex-1 relative w-full min-h-0">
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -302,7 +444,7 @@ export default function RoadmapCanvas({
         <Background variant={BackgroundVariant.Dots} gap={24} size={1} color="#1e293b" />
         <Controls showInteractive={false} position="bottom-left" />
         <MiniMap
-          className="!hidden sm:!block"
+          className="!hidden lg:!block"
           nodeColor={(node) => {
             const d = node.data as RoadmapNodeData;
             switch (d.status) {
@@ -321,68 +463,12 @@ export default function RoadmapCanvas({
           maskColor="rgba(0,0,0,0.6)"
           style={{
             background: "#0f172a",
-            border: "1px solid #334155",
+            border: "1px solid #1e293b",
             borderRadius: 8,
+            opacity: 0.85,
           }}
           aria-label="Roadmap minimap"
         />
-
-        {/* ── Search + filter toolbar (top center) ── */}
-        <Panel position="top-center">
-          <div className="w-[calc(100vw-2rem)] max-w-xl rounded-xl border border-slate-700/80 bg-slate-950/95 backdrop-blur-md shadow-xl p-2 space-y-2">
-            <div className="relative">
-              <Search
-                size={14}
-                className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500"
-                aria-hidden
-              />
-              <input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search nodes, tags, or phase…"
-                aria-label="Search roadmap nodes by title, type, or phase"
-                className="w-full min-h-[36px] rounded-lg bg-slate-900 border border-slate-700 pl-8 pr-8 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
-              />
-              {query && (
-                <button
-                  onClick={() => setQuery("")}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded text-slate-500 hover:text-slate-200"
-                  aria-label="Clear search"
-                >
-                  <X size={14} />
-                </button>
-              )}
-            </div>
-            <div
-              role="group"
-              aria-label="Filter nodes by type"
-              className="flex gap-1 overflow-x-auto pb-0.5"
-            >
-              {FILTERS.map(({ value, label, Icon }) => {
-                const pressed = filter === value;
-                return (
-                  <button
-                    key={value}
-                    onClick={() => setFilter(value)}
-                    aria-pressed={pressed}
-                    className={cn(
-                      "flex items-center gap-1 px-2 py-1.5 min-h-[32px] rounded-lg text-[11px] font-semibold whitespace-nowrap border transition-colors",
-                      pressed
-                        ? "bg-cyan-950/80 border-cyan-700 text-cyan-200"
-                        : "bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-600"
-                    )}
-                  >
-                    <Icon size={12} aria-hidden />
-                    {label}
-                  </button>
-                );
-              })}
-            </div>
-            <span className="sr-only" role="status" aria-live="polite">
-              {visibleCount} of {roadmap.nodes.length} nodes shown
-            </span>
-          </div>
-        </Panel>
 
         {/* ── Phase lanes (top left) ── */}
         <Panel position="top-left">
@@ -430,9 +516,8 @@ export default function RoadmapCanvas({
                       style={{ width: `${p.percentage}%` }}
                     />
                   </div>
-                  <div className="mt-1 truncate text-[10px] text-slate-500" title={p.subtitle}>
+                  <div className="mt-1 text-[10px] text-slate-500 truncate" title={p.subtitle}>
                     {p.subtitle}
-                    {p.hoursRemaining > 0 ? ` · ${p.hoursRemaining}h left` : " · done"}
                   </div>
                 </div>
               ))}
@@ -462,7 +547,7 @@ export default function RoadmapCanvas({
         <Panel position="bottom-center">
           <nav
             aria-label="Roadmap timeline"
-            className="w-[calc(100vw-2rem)] max-w-2xl rounded-xl border border-slate-700/80 bg-slate-950/95 backdrop-blur-md shadow-xl px-3 py-2 flex items-center gap-1 overflow-x-auto text-[11px]"
+            className="w-[calc(100vw-2rem)] max-w-2xl rounded-xl border border-slate-800 bg-slate-950/80 backdrop-blur-md shadow-xl px-3 py-1.5 flex items-center gap-1 overflow-x-auto text-[11px]"
           >
             <TimelineChip
               icon={<MapPin size={11} aria-hidden />}
@@ -492,6 +577,33 @@ export default function RoadmapCanvas({
           </nav>
         </Panel>
       </ReactFlow>
+
+      {/* Empty search/filter result — never leaves the user guessing */}
+      {searchActive && visibleCount === 0 && (
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center p-6">
+          <div className="pointer-events-auto max-w-sm rounded-xl border border-slate-700 bg-slate-950/95 px-5 py-4 text-center shadow-xl">
+            <p className="text-sm font-bold text-slate-100">
+              {filter !== "all"
+                ? `No ${activeFilterLabel.toLowerCase()} nodes in this roadmap.`
+                : `No nodes match “${query.trim()}”.`}
+            </p>
+            <p className="mt-1 text-xs text-slate-400">
+              Try another filter, or clear the search — matching nodes stay
+              prominent, others stay dimmed in the graph.
+            </p>
+            <button
+              onClick={() => {
+                setQuery("");
+                setFilter("all");
+              }}
+              className="mt-3 px-4 py-1.5 min-h-[36px] rounded-lg bg-cyan-950/80 border border-cyan-700 text-cyan-200 text-xs font-semibold hover:bg-cyan-900/80"
+            >
+              Reset to All
+            </button>
+          </div>
+        </div>
+      )}
+      </div>
     </div>
   );
 }

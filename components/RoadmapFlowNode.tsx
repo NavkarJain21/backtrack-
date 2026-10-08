@@ -99,10 +99,8 @@ function RoadmapNodeComponent({ data, selected }: NodeProps) {
   const {
     id,
     title,
-    description,
     status,
     estimatedHours,
-    tags,
     onClick,
     isSelected,
     kind = "skill",
@@ -137,7 +135,7 @@ function RoadmapNodeComponent({ data, selected }: NodeProps) {
         status === "available" &&
           "shadow-[0_0_0_1px_rgba(59,130,246,0.25),0_8px_24px_-8px_rgba(59,130,246,0.45)]",
         // Critical path: subtle amber edge emphasis (non-critical stays visible)
-        isCritical && !locked && "border-amber-400/60",
+        isCritical && !locked && "border-amber-400/40",
         // Hover / selected / focus
         "hover:-translate-y-0.5 hover:shadow-xl hover:border-slate-400",
         active && "ring-2 ring-white ring-offset-2 ring-offset-slate-950 scale-[1.03]",
@@ -219,17 +217,12 @@ function RoadmapNodeComponent({ data, selected }: NodeProps) {
         {/* Title */}
         <h3
           className={cn(
-            "font-semibold text-sm leading-tight mb-1",
+            "font-semibold text-sm leading-tight mb-2",
             locked ? "text-slate-500" : "text-slate-100"
           )}
         >
           {title}
         </h3>
-
-        {/* Description */}
-        <p className="text-xs text-slate-400 leading-snug line-clamp-2 mb-2">
-          {description}
-        </p>
 
         {/* Locked prerequisites hint */}
         {locked && missingDeps.length > 0 && (
@@ -259,32 +252,18 @@ function RoadmapNodeComponent({ data, selected }: NodeProps) {
           </div>
         )}
 
-        {/* Footer: hours + tags */}
+        {/* Footer: duration + critical marker */}
         <div className="flex items-center justify-between gap-2">
           <span className="text-[11px] text-slate-500 flex items-center gap-1 shrink-0">
             <Clock size={10} aria-hidden />
             {formatHours(estimatedHours)}
           </span>
-          {tags && tags.length > 0 && (
-            <div className="flex gap-1 overflow-hidden">
-              {tags.slice(0, 2).map((tag) => (
-                <span
-                  key={tag}
-                  className="truncate px-1.5 py-0.5 rounded text-[10px] bg-slate-800/70 text-slate-500 border border-slate-800"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+          {isCritical && (
+            <span className="text-[10px] font-medium text-amber-300/70">
+              ◆ critical
+            </span>
           )}
         </div>
-
-        {/* Critical-path marker */}
-        {isCritical && (
-          <div className="mt-1.5 text-[10px] font-medium text-amber-300/80">
-            ◆ Critical path
-          </div>
-        )}
       </div>
 
       <Handle

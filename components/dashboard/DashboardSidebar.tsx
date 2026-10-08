@@ -1,6 +1,8 @@
 "use client";
 
 import { useStore } from "@/lib/store";
+import { useAuthStore } from "@/lib/auth";
+import Link from "next/link";
 import type { DashboardTab } from "@/lib/schemas";
 import {
   LayoutDashboard,
@@ -23,18 +25,22 @@ interface DashboardSidebarProps {
   onOpenAdjust: () => void;
 }
 
-const NAV_ITEMS: { id: DashboardTab; label: string; icon: React.ElementType; badge?: string }[] = [
+const NAV_ITEMS: { id: DashboardTab; label: string; icon: React.ElementType }[] = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { id: "roadmap", label: "Roadmap Graph", icon: GitFork, badge: "Interactive" },
-  { id: "skills", label: "Skills Inventory", icon: Layers },
-  { id: "projects", label: "Projects & Capstones", icon: FolderGit2 },
-  { id: "progress", label: "Progress & Metrics", icon: TrendingUp },
+  { id: "roadmap", label: "Roadmap", icon: GitFork },
+  { id: "skills", label: "Skills", icon: Layers },
+  { id: "projects", label: "Projects", icon: FolderGit2 },
+  { id: "progress", label: "Progress", icon: TrendingUp },
+];
+
+const SECONDARY_ITEMS: { id: DashboardTab; label: string; icon: React.ElementType }[] = [
   { id: "profile", label: "Career Profile", icon: User },
   { id: "settings", label: "Settings", icon: Settings },
 ];
 
 export default function DashboardSidebar({ isOpen, onClose, onOpenAdjust }: DashboardSidebarProps) {
   const { activeTab, setActiveTab, roadmap } = useStore();
+  const { user, signOut } = useAuthStore();
 
   const handleSelectTab = (tab: DashboardTab) => {
     setActiveTab(tab);
@@ -94,7 +100,10 @@ export default function DashboardSidebar({ isOpen, onClose, onOpenAdjust }: Dash
         )}
 
         {/* Navigation Links */}
-        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto" aria-label="Main navigation">
+          <p className="px-3.5 pb-1 text-[10px] font-bold uppercase tracking-wider text-slate-600">
+            Workspace
+          </p>
           {NAV_ITEMS.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -102,8 +111,9 @@ export default function DashboardSidebar({ isOpen, onClose, onOpenAdjust }: Dash
               <button
                 key={item.id}
                 onClick={() => handleSelectTab(item.id)}
+                aria-current={isActive ? "page" : undefined}
                 className={cn(
-                  "w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all group",
+                  "w-full flex items-center px-3.5 min-h-[40px] rounded-xl text-xs font-medium transition-all group",
                   isActive
                     ? "bg-blue-600/15 text-blue-300 border border-blue-500/30 font-semibold"
                     : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent"
@@ -119,11 +129,38 @@ export default function DashboardSidebar({ isOpen, onClose, onOpenAdjust }: Dash
                   />
                   <span>{item.label}</span>
                 </div>
-                {item.badge && (
-                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
-                    {item.badge}
-                  </span>
+              </button>
+            );
+          })}
+
+          <p className="px-3.5 pt-4 pb-1 text-[10px] font-bold uppercase tracking-wider text-slate-600">
+            Account
+          </p>
+          {SECONDARY_ITEMS.map((item) => {
+            const Icon = item.icon;
+            const isActive = activeTab === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={() => handleSelectTab(item.id)}
+                aria-current={isActive ? "page" : undefined}
+                className={cn(
+                  "w-full flex items-center px-3.5 min-h-[40px] rounded-xl text-xs font-medium transition-all group",
+                  isActive
+                    ? "bg-blue-600/15 text-blue-300 border border-blue-500/30 font-semibold"
+                    : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent"
                 )}
+              >
+                <div className="flex items-center gap-3">
+                  <Icon
+                    size={16}
+                    className={cn(
+                      "transition-colors",
+                      isActive ? "text-blue-400" : "text-slate-400 group-hover:text-slate-300"
+                    )}
+                  />
+                  <span>{item.label}</span>
+                </div>
               </button>
             );
           })}
@@ -146,19 +183,42 @@ export default function DashboardSidebar({ isOpen, onClose, onOpenAdjust }: Dash
           </div>
         </nav>
 
-        {/* User Profile Footer (neutral until auth/profile exists) */}
-        <div className="p-3.5 border-t border-slate-800 bg-slate-950/60 flex items-center justify-between">
-          <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-slate-700 to-slate-600 border border-slate-600 flex items-center justify-center text-slate-200">
-              <User size={15} />
-            </div>
-            <div className="min-w-0">
-              <div className="text-xs font-semibold text-slate-200 truncate">
-                Your Career Profile
+        {/* User / Sign-in Footer */}
+        <div className="p-3.5 border-t border-slate-800 bg-slate-950/60">
+          {user ? (
+            <div className="flex items-center justify-between gap-2 min-w-0">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div
+                  aria-hidden
+                  className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 border border-blue-500/50 flex items-center justify-center text-white text-[11px] font-bold shrink-0"
+                >
+                  {user.name.trim().charAt(0).toUpperCase() || "B"}
+                </div>
+                <div className="min-w-0">
+                  <div className="text-xs font-semibold text-slate-200 truncate">{user.name}</div>
+                  <div className="text-[10px] text-slate-400 truncate">{user.email}</div>
+                  {user.isDemoSession && (
+                    <div className="text-[9px] text-amber-400/80">Demo session</div>
+                  )}
+                </div>
               </div>
-              <div className="text-[10px] text-slate-400 truncate">Local profile • No sign-in yet</div>
+              <button
+                onClick={signOut}
+                className="p-1.5 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-slate-800 text-[10px] font-semibold shrink-0"
+                aria-label="Sign out"
+                title="Sign out"
+              >
+                Sign out
+              </button>
             </div>
-          </div>
+          ) : (
+            <Link
+              href="/sign-in"
+              className="w-full flex items-center justify-center min-h-[40px] rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/70 text-slate-200 text-xs font-semibold transition-colors"
+            >
+              Sign in
+            </Link>
+          )}
         </div>
       </aside>
     </>

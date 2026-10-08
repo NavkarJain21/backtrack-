@@ -169,9 +169,6 @@ export default function RoadmapHeader({ onOpenAdjust }: RoadmapHeaderProps) {
                 {formatRemaining(progress.hoursTotal)} total
               </span>
             </div>
-            <div className="mt-0.5 text-[11px] text-slate-600">
-              Derived from node estimates — no invented dates
-            </div>
           </div>
         </div>
       </div>

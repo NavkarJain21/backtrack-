@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useStore } from "@/lib/store";
 import {
   Compass,
@@ -98,9 +99,17 @@ export default function LandingPage() {
             Backtrack
           </span>
         </div>
-        <div className="flex items-center gap-2 text-xs text-slate-400">
-          <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          AI Graph Engine Ready
+        <div className="flex items-center gap-3 text-xs text-slate-400">
+          <span className="hidden sm:inline-flex items-center gap-2">
+            <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            AI Graph Engine Ready
+          </span>
+          <Link
+            href="/sign-in"
+            className="px-3 py-1.5 min-h-[36px] inline-flex items-center rounded-xl bg-slate-900 border border-slate-800 text-slate-200 hover:bg-slate-800 transition-colors font-semibold"
+          >
+            Sign In
+          </Link>
         </div>
       </nav>
 
